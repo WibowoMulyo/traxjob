@@ -86,7 +86,7 @@ export function TrackerPage() {
           onCsv={() => exportCsv(jobs)}
         />
 
-        <div className="mx-auto max-w-[1200px] px-6 pb-2 pt-8">
+        <div className="mx-auto max-w-[1200px] px-4 pb-2 pt-6 sm:px-6 sm:pt-8">
           <Stats counts={stats} />
           <Toolbar
             query={query}

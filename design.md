@@ -226,3 +226,10 @@ text-md-on-<status>-container`. Status keys come from the data
 4. Verify both light and dark themes, keyboard focus, and reduced-motion.
 5. Keep persistence behind `JobsRepository` — don't reach into `localStorage`
    from components.
+6. **Responsive**: mobile-first, Tailwind breakpoints `sm` 640 / `md` 768 /
+   `lg` 1024. Test phone + tablet. Patterns in use: the tracker header collapses
+   secondary buttons to icon-only below `md` and shortens labels below `sm`;
+   the job list renders **stacked cards below `md`** and the full **table at
+   `md+`** (`JobTable` keeps both, sharing `RowActions`/`ContactCell`/
+   `SourceChip`). Avoid wide fixed-width tables as the only view on small
+   screens — pair a table with a card layout.

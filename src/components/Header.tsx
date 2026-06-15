@@ -25,8 +25,8 @@ export function Header({
   onCsv,
 }: Props) {
   return (
-    <header className="sticky top-0 z-20 flex flex-wrap items-center justify-between gap-3.5 border-b border-md-border bg-md-bg/70 px-7 py-[18px] backdrop-blur-md">
-      <h1 className="m-0 flex items-center gap-2.5 text-2xl font-medium tracking-[-0.01em]">
+    <header className="sticky top-0 z-20 flex flex-wrap items-center justify-between gap-3 border-b border-md-border bg-md-bg/70 px-4 py-3 backdrop-blur-md sm:px-7 sm:py-[18px]">
+      <h1 className="m-0 flex items-center gap-2.5 text-xl font-medium tracking-[-0.01em] sm:text-2xl">
         <Link
           to="/"
           className="flex items-center gap-2.5 transition-opacity hover:opacity-80"
@@ -36,40 +36,44 @@ export function Header({
           TraxJob
         </Link>
         {count > 0 && (
-          <small className="text-[0.8125rem] font-normal text-md-muted">
+          <small className="hidden text-[0.8125rem] font-normal text-md-muted sm:inline">
             · {count} applications
           </small>
         )}
       </h1>
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
         <ThemeToggle theme={theme} onToggle={onToggleTheme} />
         <Button
           variant="ghost"
           onClick={onExport}
           title="Download all data as a JSON file"
+          aria-label="Export"
         >
           <Download />
-          Export
+          <span className="hidden md:inline">Export</span>
         </Button>
         <Button
           variant="ghost"
           onClick={onImport}
           title="Load data from a JSON file"
+          aria-label="Import"
         >
           <Upload />
-          Import
+          <span className="hidden md:inline">Import</span>
         </Button>
         <Button
           variant="ghost"
           onClick={onCsv}
           title="Download as CSV (open in Excel/Sheets)"
+          aria-label="Export CSV"
         >
           <FileText />
-          CSV
+          <span className="hidden md:inline">CSV</span>
         </Button>
         <Button onClick={onAdd}>
           <Plus />
-          Add Application
+          <span className="sm:hidden">Add</span>
+          <span className="hidden sm:inline">Add Application</span>
         </Button>
       </div>
     </header>

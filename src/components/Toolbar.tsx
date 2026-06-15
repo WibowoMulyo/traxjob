@@ -25,7 +25,7 @@ interface Props {
 const ALL = "all";
 
 const triggerCls =
-  "w-[160px] rounded-full border-0 bg-md-surface-low px-4 shadow-none data-[size=default]:h-11 focus-visible:ring-0";
+  "min-w-0 flex-1 rounded-full border-0 bg-md-surface-low px-4 shadow-none data-[size=default]:h-11 focus-visible:ring-0 sm:w-[160px] sm:flex-none";
 
 export function Toolbar({
   query,

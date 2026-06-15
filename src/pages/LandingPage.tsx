@@ -96,7 +96,7 @@ function LandingBackdrop() {
 function LandingNav() {
   return (
     <header className="sticky top-0 z-20 border-b border-md-border bg-md-bg/70 backdrop-blur-md">
-      <div className="mx-auto flex max-w-[1100px] items-center justify-between gap-4 px-6 py-3.5">
+      <div className="mx-auto flex max-w-[1100px] items-center justify-between gap-4 px-4 py-3.5 sm:px-6">
         <Link to="/" className="flex items-center gap-2.5">
           <Logo className="size-8" />
           <span className="text-xl font-medium tracking-[-0.01em]">TraxJob</span>
@@ -126,13 +126,13 @@ function LandingNav() {
 function Hero() {
   return (
     <section className="relative flex min-h-[calc(100svh-69px)] items-center overflow-hidden">
-      <div className="mx-auto grid max-w-[1100px] items-center gap-12 px-6 py-16 md:grid-cols-2 md:py-24">
+      <div className="mx-auto grid max-w-[1100px] items-center gap-10 px-4 py-16 sm:px-6 md:grid-cols-2 md:gap-12 md:py-24">
         <div>
           <span className="inline-flex items-center gap-1.5 rounded-full bg-md-secondary-container px-3.5 py-1.5 text-xs font-medium text-md-on-secondary-container">
             <Sparkles className="size-3.5" />
             Free · Private · Offline-first
           </span>
-          <h1 className="mt-5 text-[2.6rem] font-bold leading-[1.1] tracking-[-0.02em] sm:text-[3.25rem]">
+          <h1 className="mt-5 text-[2rem] font-bold leading-[1.12] tracking-[-0.02em] sm:text-[2.6rem] md:text-[3.25rem]">
             Track every job application in one calm place.
           </h1>
           <p className="mt-5 max-w-xl text-lg leading-relaxed text-md-muted">
@@ -199,7 +199,7 @@ function Features() {
   return (
     <section
       id="features"
-      className="scroll-mt-20 bg-gradient-to-b from-md-surface-container/70 to-md-surface-container/20 px-6 py-16 md:py-24"
+      className="scroll-mt-20 bg-gradient-to-b from-md-surface-container/70 to-md-surface-container/20 px-4 py-16 sm:px-6 md:py-24"
     >
       <div className="mx-auto max-w-[1100px]">
         <div className="mx-auto max-w-2xl text-center">
@@ -233,7 +233,7 @@ function HowItWorks() {
   return (
     <section
       id="how"
-      className="scroll-mt-20 bg-md-secondary-container/25 px-6 py-16 md:py-24"
+      className="scroll-mt-20 bg-md-secondary-container/25 px-4 py-16 sm:px-6 md:py-24"
     >
       <div className="relative mx-auto max-w-[1100px] overflow-hidden rounded-[2rem] bg-md-surface-container px-6 py-14 shadow-elev-1 sm:px-12">
         <div
