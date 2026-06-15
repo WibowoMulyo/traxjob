@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Calendar as CalendarIcon } from "lucide-react";
 import type { Job, JobInput, JobStatus } from "@/jobs/jobs.types";
 import {
   APPLY_VIA_OPTIONS,
@@ -6,7 +7,7 @@ import {
   STATUS_LABEL,
   STATUS_OPTIONS,
 } from "@/jobs/constants";
-import { todayStr } from "@/lib/format";
+import { dateToISO, formatDateDisplay, isoToDate, todayStr } from "@/lib/format";
 import {
   Dialog,
   DialogContent,
@@ -19,6 +20,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import {
   Select,
   SelectContent,
@@ -48,6 +55,7 @@ const emptyForm = (): JobInput => ({
 
 export function JobModal({ open, job, onClose, onSubmit }: Props) {
   const [form, setForm] = useState<JobInput>(emptyForm);
+  const [dateOpen, setDateOpen] = useState(false);
 
   // Repopulate the form whenever the modal opens (add) or the target changes.
   useEffect(() => {
@@ -182,12 +190,34 @@ export function JobModal({ open, job, onClose, onSubmit }: Props) {
             </div>
             <div className="grid gap-1.5">
               <Label htmlFor="f-date">Date applied</Label>
-              <Input
-                id="f-date"
-                type="date"
-                value={form.dateApplied}
-                onChange={(e) => set("dateApplied", e.target.value)}
-              />
+              <Popover open={dateOpen} onOpenChange={setDateOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    id="f-date"
+                    type="button"
+                    variant="outline"
+                    className="w-full justify-start gap-2 rounded-md font-normal"
+                  >
+                    <CalendarIcon className="size-4 text-md-muted" />
+                    {form.dateApplied ? (
+                      formatDateDisplay(form.dateApplied)
+                    ) : (
+                      <span className="text-md-muted">Pick a date</span>
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={isoToDate(form.dateApplied)}
+                    onSelect={(d) => {
+                      set("dateApplied", d ? dateToISO(d) : "");
+                      setDateOpen(false);
+                    }}
+                    autoFocus
+                  />
+                </PopoverContent>
+              </Popover>
             </div>
           </div>
 

@@ -9,9 +9,13 @@ visually consistent.
 ## Tech & architecture constraints
 
 - **Stack**: Vite + React + TypeScript + Tailwind CSS v4. Components live in
-  `src/components/`, domain logic in `src/jobs/`, persistence in `src/storage/`.
-  Run `npm run dev`. (The pre-React single-file version is preserved as
-  `index.html.bak`.)
+  `src/components/`, domain logic in `src/jobs/`, persistence in `src/storage/`,
+  routed pages in `src/pages/`. Run `npm run dev`. (The pre-React single-file
+  version is preserved as `index.html.bak`.)
+- **Routing** (React Router v7, `BrowserRouter` in `main.tsx`): `/` →
+  `LandingPage` (marketing), `/app` → `TrackerPage` (the tracker). The tracker
+  header brand links back to `/`. Add future views (e.g. a kanban board) as new
+  routes/pages.
 - **Styling approach**: **Tailwind v4 utilities driven by the MD3 tokens**. The
   raw token values live as CSS variables in `src/styles/theme.css` (on `:root`
   and `.dark`) and are exposed to Tailwind via an `@theme inline { ... }` block.

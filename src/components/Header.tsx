@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Download, FileText, Plus, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "./Logo";
@@ -26,8 +27,14 @@ export function Header({
   return (
     <header className="sticky top-0 z-20 flex flex-wrap items-center justify-between gap-3.5 border-b border-md-border bg-md-bg/70 px-7 py-[18px] backdrop-blur-md">
       <h1 className="m-0 flex items-center gap-2.5 text-2xl font-medium tracking-[-0.01em]">
-        <Logo className="size-8" />
-        TraxJob
+        <Link
+          to="/"
+          className="flex items-center gap-2.5 transition-opacity hover:opacity-80"
+          title="Back to home"
+        >
+          <Logo className="size-8" />
+          TraxJob
+        </Link>
         {count > 0 && (
           <small className="text-[0.8125rem] font-normal text-md-muted">
             · {count} applications

@@ -251,6 +251,9 @@
   body {
     overflow-x: hidden;
   }
+  html {
+    scroll-behavior: smooth;
+  }
   body {
     margin: 0;
     background-color: var(--md-bg);
@@ -286,7 +289,52 @@
     transform: none;
   }
 }
+/* Slow, organic drift for decorative background blobs (landing page). */
+@keyframes blob-drift-a {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    transform: translate(40px, -30px) scale(1.12);
+  }
+}
+@keyframes blob-drift-b {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    transform: translate(-34px, 26px) scale(1.1);
+  }
+}
+@keyframes blob-drift-c {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    transform: translate(24px, 34px) scale(0.92);
+  }
+}
+
 @layer components {
+  /* Little-dots texture across the whole page; soft fade at top/bottom. */
+  .landing-grid {
+    background-image: radial-gradient(currentColor 1px, transparent 1.5px);
+    background-size: 28px 28px;
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent,
+      #000 6%,
+      #000 94%,
+      transparent
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      transparent,
+      #000 6%,
+      #000 94%,
+      transparent
+    );
+  }
   .animate-overlay-in {
     animation: md-overlay-in 0.2s var(--ease-md);
   }
@@ -296,6 +344,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
   *,
   *::before,
   *::after {
