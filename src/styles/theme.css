@@ -1,0 +1,322 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* Class-based dark mode: `dark:` variants key off the `.dark` class on <html>. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ============================================================
+   Material You (MD3) raw token values — switch per theme.
+   See design.md for the full reference. These are the single
+   source of truth; the @theme block below exposes them to
+   Tailwind so utilities like `bg-md-primary` resolve to them.
+   ============================================================ */
+:root {
+  /* TraxJob palette — teal primary, warm-neutral surfaces, earthy accent */
+  --md-bg: #f1efe8; /* Off-White background */
+  --md-surface-container: #fbfaf6; /* Cards: lighter than bg for lift */
+  --md-surface-low: #e8e5db; /* Recessed inputs */
+  --md-primary: #0f6e56; /* Teal */
+  --md-primary-hover: #085041; /* Dark Teal */
+  --md-on-primary: #ffffff;
+  --md-secondary-container: #e1f5ee; /* Light Teal (Primary Tint) */
+  --md-on-secondary-container: #073f31;
+  --md-tertiary: #d85a30; /* Orange accent */
+  --md-on-tertiary: #ffffff;
+  --md-text: #2c2c2a; /* Primary text (Dark Gray) */
+  --md-muted: #5f5e5a; /* Secondary text (Medium Gray) */
+  --md-outline: #a8a596;
+  --md-border: #d3d1c7; /* Light Gray */
+
+  --md-wishlist: #5f5e5a;
+  --md-wishlist-container: #e7e4da;
+  --md-on-wishlist-container: #44433f;
+  --md-applied: #185fa5; /* Blue */
+  --md-applied-container: #dce9f6;
+  --md-on-applied-container: #0a2e54;
+  --md-interview: #ba7517; /* Orange-Brown */
+  --md-interview-container: #f6e7cc;
+  --md-on-interview-container: #4a2e05;
+  --md-offer: #3b6d11; /* Green */
+  --md-offer-container: #deefc8;
+  --md-on-offer-container: #1b3406;
+  --md-rejected: #a32d2d; /* Red */
+  --md-rejected-container: #f5dad8;
+  --md-on-rejected-container: #4e1010;
+  --md-source-container: #e7e4da;
+  --md-on-source-container: #5f5e5a;
+
+  --md-elev-1: 0 1px 2px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.08);
+  --md-elev-2: 0 2px 6px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.08);
+  --md-elev-3: 0 6px 16px rgba(0, 0, 0, 0.1), 0 12px 28px rgba(0, 0, 0, 0.1);
+
+  /* --- shadcn/ui + ReUI semantic tokens, mapped onto the MD3 palette so
+         their components inherit the Material You look automatically. --- */
+  --radius: 0.75rem;
+  --background: var(--md-bg);
+  --foreground: var(--md-text);
+  --card: var(--md-surface-container);
+  --card-foreground: var(--md-text);
+  --popover: var(--md-surface-container);
+  --popover-foreground: var(--md-text);
+  --primary: var(--md-primary);
+  --primary-foreground: var(--md-on-primary);
+  --secondary: var(--md-secondary-container);
+  --secondary-foreground: var(--md-on-secondary-container);
+  --muted: var(--md-surface-low);
+  --muted-foreground: var(--md-muted);
+  --accent: var(--md-secondary-container);
+  --accent-foreground: var(--md-on-secondary-container);
+  --destructive: var(--md-rejected);
+  --destructive-foreground: #ffffff;
+  --border: var(--md-border);
+  --input: var(--md-outline);
+  --ring: var(--md-primary);
+  --chart-1: var(--md-primary);
+  --chart-2: var(--md-tertiary);
+  --chart-3: var(--md-interview);
+  --chart-4: var(--md-offer);
+  --chart-5: var(--md-rejected);
+  --sidebar: var(--md-surface-container);
+  --sidebar-foreground: var(--md-text);
+  --sidebar-primary: var(--md-primary);
+  --sidebar-primary-foreground: var(--md-on-primary);
+  --sidebar-accent: var(--md-secondary-container);
+  --sidebar-accent-foreground: var(--md-on-secondary-container);
+  --sidebar-border: var(--md-border);
+  --sidebar-ring: var(--md-primary);
+  --success: var(--color-emerald-500);
+  --success-foreground: var(--color-emerald-900);
+  --info: var(--color-violet-500);
+  --info-foreground: var(--color-violet-900);
+  --warning: var(--color-yellow-500);
+  --warning-foreground: var(--color-yellow-900);
+  --invert: var(--color-zinc-900);
+  --invert-foreground: var(--color-zinc-50);
+}
+
+.dark {
+  /* TraxJob — dark variant (warm-neutral darks, lightened teal/accent) */
+  --md-bg: #1a1a17;
+  --md-surface-container: #232320;
+  --md-surface-low: #1e1e1b;
+  --md-primary: #5fd3b2; /* Lightened teal for dark surfaces */
+  --md-primary-hover: #7bddc0;
+  --md-on-primary: #00382b;
+  --md-secondary-container: #224e41;
+  --md-on-secondary-container: #cdeee0;
+  --md-tertiary: #f2a074; /* Lightened orange accent */
+  --md-on-tertiary: #4d1b00;
+  --md-text: #eceae0;
+  --md-muted: #bdbbb0;
+  --md-outline: #8a887c;
+  --md-border: #3a3a34;
+
+  --md-wishlist: #bdbbb0;
+  --md-wishlist-container: #33332d;
+  --md-on-wishlist-container: #d8d6cb;
+  --md-applied: #8fbdee;
+  --md-applied-container: #15375c;
+  --md-on-applied-container: #d6e6fa;
+  --md-interview: #e8b871;
+  --md-interview-container: #533507;
+  --md-on-interview-container: #f6e0bc;
+  --md-offer: #9bcb6b;
+  --md-offer-container: #2a4710;
+  --md-on-offer-container: #d9efc4;
+  --md-rejected: #e79b98;
+  --md-rejected-container: #5e1c1c;
+  --md-on-rejected-container: #f6d9d7;
+  --md-source-container: #33332d;
+  --md-on-source-container: #bdbbb0;
+
+  --md-elev-1: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.4);
+  --md-elev-2: 0 2px 6px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.4);
+  --md-elev-3: 0 6px 16px rgba(0, 0, 0, 0.45), 0 12px 28px rgba(0, 0, 0, 0.5);
+
+  /* shadcn tokens above reference --md-* vars, so they re-resolve here
+     automatically. Only the destructive role needs a dark-specific tuning. */
+  --destructive: var(--md-rejected-container);
+  --destructive-foreground: #f9dedc;
+  --success: var(--color-emerald-500);
+  --success-foreground: var(--color-emerald-600);
+  --info: var(--color-violet-500);
+  --info-foreground: var(--color-violet-600);
+  --warning: var(--color-yellow-500);
+  --warning-foreground: var(--color-yellow-600);
+  --invert: var(--color-zinc-700);
+  --invert-foreground: var(--color-zinc-50);
+}
+
+/* ============================================================
+   Map raw tokens -> Tailwind theme. `inline` makes the generated
+   utilities reference the var() (so they re-resolve under .dark).
+   ============================================================ */
+@theme inline {
+  --font-sans: "Inter Tight", system-ui, sans-serif;
+  --ease-md: cubic-bezier(0.2, 0, 0, 1);
+
+  --color-md-bg: var(--md-bg);
+  --color-md-surface-container: var(--md-surface-container);
+  --color-md-surface-low: var(--md-surface-low);
+  --color-md-primary: var(--md-primary);
+  --color-md-on-primary: var(--md-on-primary);
+  --color-md-secondary-container: var(--md-secondary-container);
+  --color-md-on-secondary-container: var(--md-on-secondary-container);
+  --color-md-tertiary: var(--md-tertiary);
+  --color-md-on-tertiary: var(--md-on-tertiary);
+  --color-md-text: var(--md-text);
+  --color-md-muted: var(--md-muted);
+  --color-md-outline: var(--md-outline);
+  --color-md-border: var(--md-border);
+
+  --color-md-wishlist: var(--md-wishlist);
+  --color-md-wishlist-container: var(--md-wishlist-container);
+  --color-md-on-wishlist-container: var(--md-on-wishlist-container);
+  --color-md-applied: var(--md-applied);
+  --color-md-applied-container: var(--md-applied-container);
+  --color-md-on-applied-container: var(--md-on-applied-container);
+  --color-md-interview: var(--md-interview);
+  --color-md-interview-container: var(--md-interview-container);
+  --color-md-on-interview-container: var(--md-on-interview-container);
+  --color-md-offer: var(--md-offer);
+  --color-md-offer-container: var(--md-offer-container);
+  --color-md-on-offer-container: var(--md-on-offer-container);
+  --color-md-rejected: var(--md-rejected);
+  --color-md-rejected-container: var(--md-rejected-container);
+  --color-md-on-rejected-container: var(--md-on-rejected-container);
+  --color-md-source-container: var(--md-source-container);
+  --color-md-on-source-container: var(--md-on-source-container);
+
+  --radius-md-sm: 12px;
+  --radius-md-md: 16px;
+  --radius-md-lg: 24px;
+  --radius-md-xl: 28px;
+  --radius-md-xxl: 48px;
+
+  --shadow-elev-1: var(--md-elev-1);
+  --shadow-elev-2: var(--md-elev-2);
+  --shadow-elev-3: var(--md-elev-3);
+
+  /* shadcn/ui + ReUI utility namespace (bg-background, text-primary, etc.) */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-hover: var(--md-primary-hover);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-invert-foreground: var(--invert-foreground);
+  --color-invert: var(--invert);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-warning: var(--warning);
+  --color-info-foreground: var(--info-foreground);
+  --color-info: var(--info);
+  --color-success-foreground: var(--success-foreground);
+  --color-success: var(--success);
+}
+
+@layer base {
+  html,
+  body {
+    overflow-x: hidden;
+  }
+  body {
+    margin: 0;
+    background-color: var(--md-bg);
+    color: var(--md-text);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+  *:focus-visible {
+    outline: 2px solid var(--md-primary);
+    outline-offset: 2px;
+  }
+}
+
+/* Modal / overlay entrance animations */
+@keyframes md-overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes md-modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@layer components {
+  .animate-overlay-in {
+    animation: md-overlay-in 0.2s var(--ease-md);
+  }
+  .animate-modal-in {
+    animation: md-modal-in 0.3s var(--ease-md);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Overlay scroll-lock: avoid the right-side "padding" shift.
+   Reserve the scrollbar gutter permanently so hiding the scrollbar
+   (when a Radix Dialog opens) never reflows the layout, and cancel
+   react-remove-scroll's compensation margin/padding. These stay
+   UNLAYERED with extra specificity so they beat the library's
+   injected `body[data-scroll-locked]` !important rule.
+   ------------------------------------------------------------------ */
+html {
+  scrollbar-gutter: stable;
+}
+html body[data-scroll-locked] {
+  margin-right: 0 !important;
+  padding-right: 0 !important;
+}

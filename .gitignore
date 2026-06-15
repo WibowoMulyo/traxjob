@@ -1,0 +1,10 @@
+node_modules
+dist
+dist-ssr
+*.local
+.DS_Store
+*.log
+index.html.bak
+
+# Local Claude Code settings (personal, not shared)
+.claude/settings.local.json
