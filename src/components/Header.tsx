@@ -25,8 +25,8 @@ export function Header({
   onCsv,
 }: Props) {
   return (
-    <header className="sticky top-0 z-20 flex flex-wrap items-center justify-between gap-3 border-b border-md-border bg-md-bg/70 px-4 py-3 backdrop-blur-md sm:px-7 sm:py-[18px]">
-      <h1 className="m-0 flex items-center gap-2.5 text-xl font-medium tracking-[-0.01em] sm:text-2xl">
+    <header className="sticky top-0 z-20 flex items-center justify-between gap-2 border-b border-md-border bg-md-bg/70 px-4 py-3 backdrop-blur-md sm:gap-3 sm:px-7 sm:py-[18px]">
+      <h1 className="m-0 flex min-w-0 items-center gap-2.5 text-xl font-medium tracking-[-0.01em] sm:text-2xl">
         <Link
           to="/"
           className="flex items-center gap-2.5 transition-opacity hover:opacity-80"
@@ -41,7 +41,7 @@ export function Header({
           </small>
         )}
       </h1>
-      <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+      <div className="flex shrink-0 items-center gap-1 sm:gap-2">
         <ThemeToggle theme={theme} onToggle={onToggleTheme} />
         <Button
           variant="ghost"
