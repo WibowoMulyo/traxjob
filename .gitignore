@@ -6,5 +6,10 @@ dist-ssr
 *.log
 index.html.bak
 
+# Environment files (secrets) — keep .env.example tracked
+.env
+.env.*
+!.env.example
+
 # Local Claude Code settings (personal, not shared)
 .claude/settings.local.json
