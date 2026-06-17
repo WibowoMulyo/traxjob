@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import type { StatCounts } from "@/jobs/selectors";
 
@@ -12,7 +13,7 @@ interface Props {
   counts: StatCounts;
 }
 
-export function Stats({ counts }: Props) {
+export const Stats = memo(function Stats({ counts }: Props) {
   const items: StatItem[] = [
     { num: counts.total, label: "Total", color: "text-md-text" },
     { num: counts.applied, label: "Applied", color: "text-md-applied" },
@@ -41,4 +42,4 @@ export function Stats({ counts }: Props) {
       ))}
     </div>
   );
-}
+});

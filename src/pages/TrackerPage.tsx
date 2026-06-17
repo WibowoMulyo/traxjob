@@ -1,7 +1,10 @@
-import { useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
+import { Loader2 } from "lucide-react";
 import type { Job, JobInput, JobStatus, SortKey } from "@/jobs/jobs.types";
 import { useJobs } from "@/jobs/useJobs";
+import { toast } from "sonner";
 import { useTheme } from "@/hooks/useTheme";
+import { useConfirm } from "@/components/confirm";
 import { computeStats, filterAndSort, uniqueSources } from "@/jobs/selectors";
 import { exportCsv, exportJson, parseImportFile } from "@/lib/exportImport";
 import { Backdrop } from "@/components/Backdrop";
@@ -12,8 +15,9 @@ import { JobTable } from "@/components/JobTable";
 import { JobModal } from "@/components/JobModal";
 
 export function TrackerPage() {
-  const { jobs, addJob, updateJob, removeJob, importJobs } = useJobs();
+  const { jobs, loading, addJob, updateJob, removeJob, importJobs } = useJobs();
   const { theme, toggle } = useTheme();
+  const confirm = useConfirm();
 
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState<JobStatus | "">("");
@@ -34,13 +38,18 @@ export function TrackerPage() {
     [jobs, query, status, source, sortKey, sortDir],
   );
 
-  const handleSort = (key: SortKey) => {
-    if (key === sortKey) setSortDir((d) => (d * -1) as 1 | -1);
-    else {
-      setSortKey(key);
-      setSortDir(1);
-    }
-  };
+  const handleSort = useCallback(
+    (key: SortKey) => {
+      if (key === sortKey) setSortDir((d) => (d * -1) as 1 | -1);
+      else {
+        setSortKey(key);
+        setSortDir(1);
+      }
+    },
+    [sortKey],
+  );
+
+  const handleEdit = useCallback((job: Job) => setEditing(job), []);
 
   const handleSubmit = (data: JobInput) => {
     if (editing) updateJob(editing.id, data);
@@ -48,11 +57,24 @@ export function TrackerPage() {
     setEditing(undefined);
   };
 
-  const handleDelete = (job: Job) => {
-    if (confirm(`Delete application "${job.company} - ${job.role}"?`)) {
-      removeJob(job.id);
-    }
-  };
+  const handleDelete = useCallback(
+    async (job: Job) => {
+      const ok = await confirm({
+        title: "Delete application?",
+        description: `"${job.company} — ${job.role}" will be permanently removed.`,
+        confirmText: "Delete",
+        destructive: true,
+      });
+      if (!ok) return;
+      try {
+        await removeJob(job.id);
+        toast.success("Application deleted.");
+      } catch {
+        toast.error("Couldn't delete the application. Please try again.");
+      }
+    },
+    [confirm, removeJob],
+  );
 
   const handleImportFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -60,15 +82,19 @@ export function TrackerPage() {
     if (!file) return;
     try {
       const imported = await parseImportFile(file);
-      if (
-        confirm(
-          `Import ${imported.length} applications? They will be merged with your existing data.`,
-        )
-      ) {
-        importJobs(imported);
-      }
+      const plural = imported.length === 1 ? "" : "s";
+      const ok = await confirm({
+        title: "Import applications?",
+        description: `${imported.length} application${plural} will be merged with your existing data.`,
+        confirmText: "Import",
+      });
+      if (!ok) return;
+      await importJobs(imported);
+      toast.success(`Imported ${imported.length} application${plural}.`);
     } catch (err) {
-      alert(`Import failed: ${err instanceof Error ? err.message : err}`);
+      toast.error(
+        `Import failed: ${err instanceof Error ? err.message : "Unknown error"}`,
+      );
     }
   };
 
@@ -87,30 +113,38 @@ export function TrackerPage() {
         />
 
         <div className="mx-auto max-w-[1200px] px-4 pb-2 pt-6 sm:px-6 sm:pt-8">
-          <Stats counts={stats} />
-          <Toolbar
-            query={query}
-            status={status}
-            source={source}
-            sources={sources}
-            onQuery={setQuery}
-            onStatus={setStatus}
-            onSource={setSource}
-          />
-          <JobTable
-            jobs={rows}
-            isEmpty={jobs.length === 0}
-            sortKey={sortKey}
-            sortDir={sortDir}
-            onSort={handleSort}
-            onEdit={(job) => setEditing(job)}
-            onDelete={handleDelete}
-          />
+          {loading ? (
+            <div className="grid place-items-center py-24">
+              <Loader2 className="size-8 animate-spin text-md-primary" />
+            </div>
+          ) : (
+            <>
+              <Stats counts={stats} />
+              <Toolbar
+                query={query}
+                status={status}
+                source={source}
+                sources={sources}
+                onQuery={setQuery}
+                onStatus={setStatus}
+                onSource={setSource}
+              />
+              <JobTable
+                jobs={rows}
+                isEmpty={jobs.length === 0}
+                sortKey={sortKey}
+                sortDir={sortDir}
+                onSort={handleSort}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+              />
+            </>
+          )}
         </div>
 
         <footer className="px-5 py-8 text-center text-xs text-md-muted">
-          Your data is saved automatically in this browser (localStorage).
-          Export periodically to back it up.
+          Your applications are saved to your account. Export anytime to keep a
+          backup.
         </footer>
       </div>
 

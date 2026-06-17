@@ -11,4 +11,10 @@ export default defineConfig({
       "@": path.resolve(import.meta.dirname, "./src"),
     },
   },
+  server: {
+    /* Proxy API calls to the standalone Express server in dev — keeps cookies same-origin */
+    proxy: {
+      "/api": "http://localhost:3001",
+    },
+  },
 });

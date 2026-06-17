@@ -1,30 +1,71 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Job, JobInput } from "./jobs.types";
-import { uid } from "../lib/format";
-import { LocalStorageRepository } from "../storage/LocalStorageRepository";
+import { ApiRepository } from "../storage/ApiRepository";
 import type { JobsRepository } from "../storage/JobsRepository";
 
+const LEGACY_KEY = "jobTracker.v1";
+const UUID_RE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+function readLegacyJobs(): Job[] {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(LEGACY_KEY) ?? "[]");
+    return Array.isArray(parsed) ? (parsed as Job[]) : [];
+  } catch {
+    return [];
+  }
+}
+
+/* Ensure a job has a DB-valid UUID and a createdAt (regenerating on missing,
+   duplicate, or non-UUID ids — e.g. legacy localStorage / imported data). */
+function withValidId(job: Job, taken: Set<string>): Job {
+  const ok =
+    typeof job.id === "string" && UUID_RE.test(job.id) && !taken.has(job.id);
+  return {
+    ...job,
+    id: ok ? job.id : crypto.randomUUID(),
+    createdAt: job.createdAt || new Date().toISOString(),
+  };
+}
+
 /**
- * Owns all job state and CRUD logic. Components call these actions and never
- * touch storage directly. Swap the repository here (e.g. for cloud sync) and
- * nothing downstream changes.
+ * Owns all job state and CRUD logic against the API. Components call these
+ * actions and never touch storage directly. Pass a different repository to
+ * swap the backend (e.g. localStorage in tests).
  */
 export function useJobs(repository?: JobsRepository) {
-  const repo = useMemo(
-    () => repository ?? new LocalStorageRepository(),
-    [repository],
-  );
+  const repo = useMemo(() => repository ?? new ApiRepository(), [repository]);
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let active = true;
-    repo.getAll().then((data) => {
-      if (active) {
-        setJobs(data);
-        setLoading(false);
+    (async () => {
+      try {
+        let data = await repo.getAll();
+        /* One-time migration: lift any jobs still in localStorage up to the
+           account the first time the server has none. */
+        if (data.length === 0) {
+          const legacy = readLegacyJobs();
+          if (legacy.length > 0) {
+            const taken = new Set<string>();
+            const migrated = legacy.map((j) => {
+              const job = withValidId(j, taken);
+              taken.add(job.id);
+              return job;
+            });
+            await repo.saveAll(migrated);
+            localStorage.removeItem(LEGACY_KEY);
+            data = migrated;
+          }
+        }
+        if (active) setJobs(data);
+      } catch (err) {
+        console.error("[TraxJob] Failed to load jobs:", err);
+      } finally {
+        if (active) setLoading(false);
       }
-    });
+    })();
     return () => {
       active = false;
     };
@@ -32,9 +73,13 @@ export function useJobs(repository?: JobsRepository) {
 
   const addJob = useCallback(
     async (data: JobInput) => {
-      const job: Job = { id: uid(), createdAt: new Date().toISOString(), ...data };
-      await repo.save(job);
+      const job: Job = {
+        id: crypto.randomUUID(),
+        createdAt: new Date().toISOString(),
+        ...data,
+      };
       setJobs((prev) => [...prev, job]);
+      await repo.save(job);
     },
     [repo],
   );
@@ -62,16 +107,15 @@ export function useJobs(repository?: JobsRepository) {
     [repo],
   );
 
-  /** Merge imported jobs, regenerating ids that are missing or collide. */
   const importJobs = useCallback(
     async (incoming: Job[]) => {
       let merged: Job[] = [];
       setJobs((prev) => {
-        const ids = new Set(prev.map((j) => j.id));
+        const taken = new Set(prev.map((j) => j.id));
         merged = [...prev];
         for (const j of incoming) {
-          const job = !j.id || ids.has(j.id) ? { ...j, id: uid() } : j;
-          ids.add(job.id);
+          const job = withValidId(j, taken);
+          taken.add(job.id);
           merged.push(job);
         }
         return merged;

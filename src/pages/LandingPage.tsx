@@ -11,6 +11,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/auth/AuthContext";
 import { Logo } from "@/components/Logo";
 import { StatusBadge } from "@/components/StatusBadge";
 import type { JobStatus } from "@/jobs/jobs.types";
@@ -29,12 +30,12 @@ const FEATURES = [
   {
     icon: Download,
     title: "Export & import",
-    body: "Your data is portable. Download everything as JSON or CSV, and import it back anytime.",
+    body: "Your data is never locked in — export everything to JSON or CSV any time, and import it back whenever you need.",
   },
   {
     icon: ShieldCheck,
-    title: "Private by default",
-    body: "No accounts, no servers. Everything is stored locally in your browser — your job search stays yours.",
+    title: "Private & secure",
+    body: "Your own account, protected with modern password hashing. Your job search data stays yours.",
   },
   {
     icon: CalendarClock,
@@ -94,6 +95,7 @@ function LandingBackdrop() {
 }
 
 function LandingNav() {
+  const { user } = useAuth();
   return (
     <header className="sticky top-0 z-20 border-b border-md-border bg-md-bg/70 backdrop-blur-md">
       <div className="mx-auto flex max-w-[1100px] items-center justify-between gap-4 px-4 py-3.5 sm:px-6">
@@ -114,9 +116,20 @@ function LandingNav() {
           >
             How it works
           </a>
-          <Button asChild>
-            <Link to="/app">Open app</Link>
-          </Button>
+          {user ? (
+            <Button asChild>
+              <Link to="/app">Open app</Link>
+            </Button>
+          ) : (
+            <>
+              <Button asChild variant="ghost">
+                <Link to="/login">Log in</Link>
+              </Button>
+              <Button asChild>
+                <Link to="/register">Sign up</Link>
+              </Button>
+            </>
+          )}
         </nav>
       </div>
     </header>
@@ -124,13 +137,14 @@ function LandingNav() {
 }
 
 function Hero() {
+  const { user } = useAuth();
   return (
     <section className="relative flex min-h-[calc(100svh-69px)] items-center overflow-hidden">
       <div className="mx-auto grid max-w-[1100px] items-center gap-10 px-4 py-16 sm:px-6 md:grid-cols-2 md:gap-12 md:py-24">
         <div>
           <span className="inline-flex items-center gap-1.5 rounded-full bg-md-secondary-container px-3.5 py-1.5 text-xs font-medium text-md-on-secondary-container">
             <Sparkles className="size-3.5" />
-            Free · Private · Offline-first
+            Free · Private · Made for job seekers
           </span>
           <h1 className="mt-5 text-[2rem] font-bold leading-[1.12] tracking-[-0.02em] sm:text-[2.6rem] md:text-[3.25rem]">
             Track every job application in one calm place.
@@ -138,22 +152,35 @@ function Hero() {
           <p className="mt-5 max-w-xl text-lg leading-relaxed text-md-muted">
             TraxJob keeps your job search organized — log applications, move them
             through clear stages, and follow up on time. No spreadsheets, no
-            sign-up, your data stays in your browser.
+            chaos, just your job hunt under control.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-3">
-            <Button asChild size="lg" className="text-base">
-              <Link to="/app">
-                Open TraxJob
-                <ArrowRight />
-              </Link>
-            </Button>
-            <Button asChild size="lg" variant="outline" className="text-base">
-              <a href="#features">See features</a>
-            </Button>
+            {user ? (
+              <Button asChild size="lg" className="text-base">
+                <Link to="/app">
+                  Open TraxJob
+                  <ArrowRight />
+                </Link>
+              </Button>
+            ) : (
+              <>
+                <Button asChild size="lg" className="text-base">
+                  <Link to="/register">
+                    Get started — it's free
+                    <ArrowRight />
+                  </Link>
+                </Button>
+                <Button asChild size="lg" variant="outline" className="text-base">
+                  <Link to="/login">Log in</Link>
+                </Button>
+              </>
+            )}
           </div>
-          <p className="mt-4 text-sm text-md-muted">
-            No account needed — opens instantly in your browser.
-          </p>
+          {!user && (
+            <p className="mt-4 text-sm text-md-muted">
+              Free to use — create an account in seconds.
+            </p>
+          )}
         </div>
 
         {/* Product preview mock */}
@@ -271,6 +298,7 @@ function HowItWorks() {
 }
 
 function FinalCta() {
+  const { user } = useAuth();
   return (
     <section className="px-6 py-16 md:py-24">
       <div className="relative mx-auto max-w-[1100px] overflow-hidden rounded-[2rem] bg-md-primary px-6 py-16 text-center shadow-elev-3 sm:px-12">
@@ -286,8 +314,8 @@ function FinalCta() {
           Ready to get organized?
         </h2>
         <p className="mx-auto mt-4 max-w-xl text-lg text-md-on-primary/85">
-          Start tracking your applications in seconds. It's free, private, and
-          works right in your browser.
+          Start tracking your applications in minutes — it's free, private, and
+          built for the job hunt.
         </p>
         <div className="mt-8">
           <Button
@@ -295,10 +323,17 @@ function FinalCta() {
             size="lg"
             className="bg-md-bg text-base text-md-primary hover:bg-md-bg/90"
           >
-            <Link to="/app">
-              Open TraxJob
-              <ArrowRight />
-            </Link>
+            {user ? (
+              <Link to="/app">
+                Open TraxJob
+                <ArrowRight />
+              </Link>
+            ) : (
+              <Link to="/register">
+                Create your free account
+                <ArrowRight />
+              </Link>
+            )}
           </Button>
         </div>
       </div>

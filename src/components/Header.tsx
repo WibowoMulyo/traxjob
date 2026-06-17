@@ -1,14 +1,18 @@
 import { Link } from "react-router-dom";
-import { Download, FileText, MoreVertical, Plus, Upload } from "lucide-react";
+import { ArrowDownUp, Download, LogOut, Moon, Plus, Sun, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useAuth } from "@/auth/AuthContext";
 import { Logo } from "./Logo";
-import { ThemeToggle } from "./ThemeToggle";
 import type { Theme } from "@/hooks/useTheme";
 
 interface Props {
@@ -30,9 +34,11 @@ export function Header({
   onImport,
   onCsv,
 }: Props) {
+  const { user, logout } = useAuth();
+
   return (
-    <header className="sticky top-0 z-20 flex items-center justify-between gap-3 border-b border-md-border bg-md-bg/70 px-4 py-3 backdrop-blur-md sm:px-7 sm:py-4.5">
-      <h1 className="m-0 flex min-w-0 items-center gap-2.5 text-xl font-medium tracking-[-0.01em] sm:text-2xl">
+    <header className="sticky top-0 z-20 flex items-center justify-between gap-4 border-b border-md-border bg-md-bg/70 px-4 py-3.5 backdrop-blur-md sm:px-6">
+      <h1 className="m-0 flex min-w-0 items-center gap-2.5 text-xl font-medium tracking-[-0.01em]">
         <Link
           to="/"
           className="flex min-w-0 items-center gap-2.5 transition-opacity hover:opacity-80"
@@ -48,70 +54,81 @@ export function Header({
         )}
       </h1>
 
-      <div className="flex shrink-0 items-center gap-1 sm:gap-2">
-        <ThemeToggle theme={theme} onToggle={onToggleTheme} />
-
-        {/* md+: data actions inline */}
-        <div className="hidden items-center gap-2 md:flex">
-          <Button
-            variant="ghost"
-            onClick={onExport}
-            title="Download all data as a JSON file"
-          >
-            <Download />
-            Export
-          </Button>
-          <Button
-            variant="ghost"
-            onClick={onImport}
-            title="Load data from a JSON file"
-          >
-            <Upload />
-            Import
-          </Button>
-          <Button
-            variant="ghost"
-            onClick={onCsv}
-            title="Download as CSV (open in Excel/Sheets)"
-          >
-            <FileText />
-            CSV
-          </Button>
-        </div>
-
-        {/* below md: data actions collapse into an overflow menu */}
-        <DropdownMenu modal={false}>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="md:hidden"
-              aria-label="More actions"
-            >
-              <MoreVertical />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={onExport}>
-              <Download />
-              Export
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={onImport}>
-              <Upload />
-              Import
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={onCsv}>
-              <FileText />
-              CSV
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-
+      <div className="flex shrink-0 items-center gap-2">
         <Button onClick={onAdd}>
           <Plus />
           <span className="sm:hidden">Add</span>
           <span className="hidden sm:inline">Add Application</span>
         </Button>
+
+        {/* Import / export */}
+        <DropdownMenu modal={false}>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" aria-label="Import and export data">
+              <ArrowDownUp />
+              <span className="hidden sm:inline">Data</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger>
+                <Download />
+                Export
+              </DropdownMenuSubTrigger>
+              <DropdownMenuSubContent>
+                <DropdownMenuItem onClick={onExport}>JSON</DropdownMenuItem>
+                <DropdownMenuItem onClick={onCsv}>CSV</DropdownMenuItem>
+              </DropdownMenuSubContent>
+            </DropdownMenuSub>
+            <DropdownMenuItem onClick={onImport}>
+              <Upload />
+              Import JSON
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
+        {/* Account: profile, theme, log out */}
+        {user && (
+          <DropdownMenu modal={false}>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon" aria-label="Account">
+                <span className="grid size-8 place-items-center rounded-full bg-md-secondary-container text-sm font-medium text-md-on-secondary-container">
+                  {(user.name?.[0] ?? user.email[0]).toUpperCase()}
+                </span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <div className="px-2 py-1.5">
+                <div className="truncate text-sm font-medium">
+                  {user.name ?? "Account"}
+                </div>
+                <div className="max-w-[200px] truncate text-xs text-md-muted">
+                  {user.email}
+                </div>
+              </div>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onSelect={(e) => {
+                  e.preventDefault();
+                  onToggleTheme();
+                }}
+              >
+                {theme === "dark" ? <Sun /> : <Moon />}
+                {theme === "dark" ? "Light mode" : "Dark mode"}
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                variant="destructive"
+                onClick={() => {
+                  void logout();
+                }}
+              >
+                <LogOut />
+                Log out
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </div>
     </header>
   );

@@ -1,4 +1,5 @@
-import type { ReactNode } from "react";
+import { memo, type ReactNode } from "react";
+import { useMediaQuery } from "@/hooks/useMediaQuery";
 import {
   ChevronDown,
   ChevronUp,
@@ -174,7 +175,7 @@ function JobCard({
   );
 }
 
-export function JobTable({
+export const JobTable = memo(function JobTable({
   jobs,
   isEmpty,
   sortKey,
@@ -183,6 +184,7 @@ export function JobTable({
   onEdit,
   onDelete,
 }: Props) {
+  const isDesktop = useMediaQuery("(min-width: 768px)");
   const emptyText = isEmpty ? (
     <>
       No applications yet. Click <b>+ Add Application</b> to get started.
@@ -191,10 +193,11 @@ export function JobTable({
     "No results for this filter."
   );
 
-  return (
-    <>
-      {/* Mobile & tablet: stacked cards */}
-      <div className="space-y-3 md:hidden">
+  /* Render only the active layout (cards on mobile, table on desktop) rather
+     than both — halves the rows and per-row menus reconciled on each change. */
+  if (!isDesktop) {
+    return (
+      <div className="space-y-3">
         {jobs.length === 0 ? (
           <div className="rounded-md-lg bg-md-surface-container px-6 py-12 text-center text-md-muted shadow-elev-1">
             {emptyText}
@@ -205,10 +208,12 @@ export function JobTable({
           ))
         )}
       </div>
+    );
+  }
 
-      {/* md and up: full table */}
-      <div className="hidden overflow-hidden rounded-md-lg bg-md-surface-container shadow-elev-1 md:block">
-        <Table className="min-w-[720px]">
+  return (
+    <div className="overflow-hidden rounded-md-lg bg-md-surface-container shadow-elev-1">
+      <Table className="min-w-[720px]">
           <TableHeader>
             <TableRow className="hover:bg-transparent">
               {COLUMNS.map((col, i) => (
@@ -282,6 +287,5 @@ export function JobTable({
           </TableBody>
         </Table>
       </div>
-    </>
   );
-}
+});

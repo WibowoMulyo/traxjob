@@ -134,9 +134,9 @@
   --md-elev-3: 0 6px 16px rgba(0, 0, 0, 0.45), 0 12px 28px rgba(0, 0, 0, 0.5);
 
   /* shadcn tokens above reference --md-* vars, so they re-resolve here
-     automatically. Only the destructive role needs a dark-specific tuning. */
-  --destructive: var(--md-rejected-container);
-  --destructive-foreground: #f9dedc;
+     automatically. Destructive uses the lighter rejected red in dark so the
+     log-out / delete actions stay legible as text on the dark menu. */
+  --destructive: var(--md-rejected);
   --success: var(--color-emerald-500);
   --success-foreground: var(--color-emerald-600);
   --info: var(--color-violet-500);
@@ -357,15 +357,14 @@
 }
 
 /* ------------------------------------------------------------------
-   Overlay scroll-lock: avoid the right-side "padding" shift.
-   Reserve the scrollbar gutter permanently so hiding the scrollbar
-   (when a Radix Dialog opens) never reflows the layout, and cancel
-   react-remove-scroll's compensation margin/padding. These stay
-   UNLAYERED with extra specificity so they beat the library's
-   injected `body[data-scroll-locked]` !important rule.
+   Keep the viewport scrollbar mounted on <html> so opening an overlay
+   (Dialog / Select) — which locks <body> via react-remove-scroll —
+   never removes the scrollbar and shifts the page. Then cancel the
+   library's now-redundant padding/margin compensation (the higher-
+   specificity selector beats its injected !important rule).
    ------------------------------------------------------------------ */
 html {
-  scrollbar-gutter: stable;
+  overflow-y: scroll;
 }
 html body[data-scroll-locked] {
   margin-right: 0 !important;

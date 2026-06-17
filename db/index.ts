@@ -3,8 +3,12 @@ import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
 import * as schema from "./schema";
 
-/* Shared Postgres pool + Drizzle client for the backend. */
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const connectionString = process.env.DATABASE_URL;
+if (!connectionString) {
+  throw new Error("[TraxJob] DATABASE_URL is not set");
+}
+
+const pool = new Pool({ connectionString });
 
 export const db = drizzle(pool, { schema });
 export { schema };

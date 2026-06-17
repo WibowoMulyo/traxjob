@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
@@ -27,7 +28,7 @@ const ALL = "all";
 const triggerCls =
   "min-w-0 flex-1 rounded-full border-0 bg-md-surface-low px-4 shadow-none data-[size=default]:h-11 focus-visible:ring-0 lg:w-[160px] lg:flex-none";
 
-export function Toolbar({
+export const Toolbar = memo(function Toolbar({
   query,
   status,
   source,
@@ -84,4 +85,4 @@ export function Toolbar({
       </Select>
     </div>
   );
-}
+});
