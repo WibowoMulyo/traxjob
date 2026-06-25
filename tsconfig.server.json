@@ -13,5 +13,5 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true
   },
-  "include": ["server", "db", "drizzle.config.ts"]
+  "include": ["server", "api", "db", "drizzle.config.ts"]
 }
