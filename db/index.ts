@@ -8,7 +8,13 @@ if (!connectionString) {
   throw new Error("[TraxJob] DATABASE_URL is not set");
 }
 
-const pool = new Pool({ connectionString });
+/* Local Postgres runs without TLS; managed providers (Neon) require it. */
+const isLocal = /@(localhost|127\.0\.0\.1)(:|\/)/.test(connectionString);
+
+const pool = new Pool({
+  connectionString,
+  ssl: isLocal ? false : { rejectUnauthorized: true },
+});
 
 export const db = drizzle(pool, { schema });
 export { schema };
