@@ -14,11 +14,11 @@ const schema = z.object({
 
 const parsed = schema.safeParse(process.env);
 if (!parsed.success) {
-  console.error(
-    "[TraxJob] Invalid environment configuration:",
-    parsed.error.flatten().fieldErrors,
+  const fieldErrors = parsed.error.flatten().fieldErrors;
+  console.error("[TraxJob] Invalid environment configuration:", fieldErrors);
+  throw new Error(
+    `Invalid environment configuration: ${JSON.stringify(fieldErrors)}`,
   );
-  process.exit(1);
 }
 
 export const env = parsed.data;
