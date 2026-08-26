@@ -1,5 +1,5 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
-import { createApp } from "../server/app";
+import { createApp } from "../server/app.js";
 
 /* Serve the whole Express app as one Vercel serverless function. The vercel.json
    rewrite funnels every /api/* request here; Express routes on the original URL. */

@@ -4,9 +4,9 @@ import express, {
 } from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import { env, isProd } from "./env";
-import { authRouter } from "./routes/auth";
-import { jobsRouter } from "./routes/jobs";
+import { env, isProd } from "./env.js";
+import { authRouter } from "./routes/auth.js";
+import { jobsRouter } from "./routes/jobs.js";
 
 export function createApp(): Express {
   const app = express();

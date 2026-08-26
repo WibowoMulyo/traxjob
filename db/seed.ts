@@ -1,7 +1,7 @@
 import "dotenv/config";
 import { hash } from "@node-rs/argon2";
 import { eq } from "drizzle-orm";
-import { db, schema } from "./index";
+import { db, schema } from "./index.js";
 
 const DEMO_EMAIL = process.env.DEMO_EMAIL ?? "demo@traxjob.app";
 const DEMO_PASSWORD = process.env.DEMO_PASSWORD ?? "password123";

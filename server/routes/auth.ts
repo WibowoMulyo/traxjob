@@ -1,19 +1,19 @@
 import { Router, type Request } from "express";
 import { and, eq, gt, isNull } from "drizzle-orm";
 import { z } from "zod";
-import { db, schema } from "../../db";
-import { env } from "../env";
-import { asyncHandler } from "../lib/asyncHandler";
-import { sendPasswordResetEmail } from "../lib/email";
-import { hashPassword, verifyPassword } from "../lib/password";
+import { db, schema } from "../../db/index.js";
+import { env } from "../env.js";
+import { asyncHandler } from "../lib/asyncHandler.js";
+import { sendPasswordResetEmail } from "../lib/email.js";
+import { hashPassword, verifyPassword } from "../lib/password.js";
 import {
   createSession,
   destroyAllUserSessions,
   destroySession,
-} from "../lib/sessions";
-import { generateToken, hashToken } from "../lib/tokens";
-import { requireAuth } from "../middleware/requireAuth";
-import type { PublicUser } from "../types";
+} from "../lib/sessions.js";
+import { generateToken, hashToken } from "../lib/tokens.js";
+import { requireAuth } from "../middleware/requireAuth.js";
+import type { PublicUser } from "../types.js";
 
 export const authRouter = Router();
 

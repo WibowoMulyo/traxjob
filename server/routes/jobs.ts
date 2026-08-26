@@ -1,9 +1,9 @@
 import { Router, type Request } from "express";
 import { and, desc, eq } from "drizzle-orm";
 import { z } from "zod";
-import { db, schema } from "../../db";
-import { asyncHandler } from "../lib/asyncHandler";
-import { requireAuth } from "../middleware/requireAuth";
+import { db, schema } from "../../db/index.js";
+import { asyncHandler } from "../lib/asyncHandler.js";
+import { requireAuth } from "../middleware/requireAuth.js";
 
 export const jobsRouter = Router();
 jobsRouter.use(requireAuth);

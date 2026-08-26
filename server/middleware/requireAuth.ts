@@ -1,5 +1,5 @@
-import { asyncHandler } from "../lib/asyncHandler";
-import { getUserFromRequest } from "../lib/sessions";
+import { asyncHandler } from "../lib/asyncHandler.js";
+import { getUserFromRequest } from "../lib/sessions.js";
 
 export const requireAuth = asyncHandler(async (req, res, next) => {
   const user = await getUserFromRequest(req);

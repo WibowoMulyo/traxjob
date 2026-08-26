@@ -1,9 +1,9 @@
 import type { Request, Response } from "express";
 import { and, eq, gt } from "drizzle-orm";
-import { db, schema } from "../../db";
-import { isProd } from "../env";
-import type { PublicUser } from "../types";
-import { generateToken, hashToken } from "./tokens";
+import { db, schema } from "../../db/index.js";
+import { isProd } from "../env.js";
+import type { PublicUser } from "../types.js";
+import { generateToken, hashToken } from "./tokens.js";
 
 const COOKIE_NAME = "traxjob_session";
 const SESSION_TTL_MS = 1000 * 60 * 60 * 24 * 30; /* 30 days */
