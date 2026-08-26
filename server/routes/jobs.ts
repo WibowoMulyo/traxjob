@@ -30,6 +30,20 @@ const dateApplied = z
 const jobInput = z.object({
   company: z.string().trim().min(1).max(200),
   role: z.string().trim().min(1).max(200),
+  url: z
+    .string()
+    .trim()
+    .max(2048)
+    .refine((value) => {
+      if (!value) return true;
+      try {
+        const parsed = new URL(value);
+        return parsed.protocol === "http:" || parsed.protocol === "https:";
+      } catch {
+        return false;
+      }
+    }, "Must be a valid URL")
+    .default(""),
   source: z.string().max(200).default(""),
   applyVia: z.string().max(200).default(""),
   status: statusEnum,
@@ -51,6 +65,7 @@ function rowToClient(row: JobRow) {
     createdAt: row.createdAt.toISOString(),
     company: row.company,
     role: row.role,
+    url: row.url,
     source: row.source,
     applyVia: row.applyVia,
     status: row.status,
@@ -64,6 +79,7 @@ function inputColumns(input: JobInput) {
   return {
     company: input.company,
     role: input.role,
+    url: input.url,
     source: input.source,
     applyVia: input.applyVia,
     status: input.status,

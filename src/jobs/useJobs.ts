@@ -24,6 +24,7 @@ function withValidId(job: Job, taken: Set<string>): Job {
   return {
     ...job,
     id: ok ? job.id : crypto.randomUUID(),
+    url: typeof job.url === "string" ? job.url : "",
     createdAt: job.createdAt || new Date().toISOString(),
   };
 }

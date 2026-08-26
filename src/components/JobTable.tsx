@@ -55,29 +55,41 @@ const COLUMNS: Column[] = [
 const headLabelCls =
   "text-[0.6875rem] font-medium uppercase tracking-[0.07em] text-md-muted";
 
-function ContactCell({ contact }: { contact: string }) {
-  if (!contact) return <span className="text-md-muted">—</span>;
-  if (isUrl(contact))
-    return (
-      <a
-        href={contact}
-        target="_blank"
-        rel="noopener"
-        className="inline-flex items-center gap-1 font-medium text-md-primary hover:underline"
-      >
-        Link <ExternalLink className="size-3.5" />
-      </a>
-    );
-  if (isEmail(contact))
-    return (
-      <a
-        href={`mailto:${contact}`}
-        className="font-medium text-md-primary hover:underline"
-      >
-        {contact}
-      </a>
-    );
-  return <span>{contact}</span>;
+function ContactCell({ contact, url }: { contact: string; url: string }) {
+  if (!contact && !url) return <span className="text-md-muted">—</span>;
+  return (
+    <div className="grid gap-1">
+      {url && (
+        <a
+          href={url}
+          target="_blank"
+          rel="noopener"
+          className="inline-flex items-center gap-1 font-medium text-md-primary hover:underline"
+        >
+          Job posting <ExternalLink className="size-3.5" />
+        </a>
+      )}
+      {isUrl(contact) ? (
+        <a
+          href={contact}
+          target="_blank"
+          rel="noopener"
+          className="inline-flex items-center gap-1 font-medium text-md-primary hover:underline"
+        >
+          Link <ExternalLink className="size-3.5" />
+        </a>
+      ) : isEmail(contact) ? (
+        <a
+          href={`mailto:${contact}`}
+          className="font-medium text-md-primary hover:underline"
+        >
+          {contact}
+        </a>
+      ) : (
+        contact && <span>{contact}</span>
+      )}
+    </div>
+  );
 }
 
 function SourceChip({ source }: { source: string }) {
@@ -168,7 +180,7 @@ function JobCard({
           <span className="text-md-muted">{job.dateApplied || "—"}</span>
         </CardField>
         <CardField label="Contact">
-          <ContactCell contact={job.contact} />
+          <ContactCell contact={job.contact} url={job.url} />
         </CardField>
       </dl>
     </div>
@@ -276,7 +288,7 @@ export const JobTable = memo(function JobTable({
                     {j.dateApplied || "—"}
                   </TableCell>
                   <TableCell className="px-4 py-4 align-middle">
-                    <ContactCell contact={j.contact} />
+                    <ContactCell contact={j.contact} url={j.url} />
                   </TableCell>
                   <TableCell className="px-4 py-4 align-middle">
                     <RowActions job={j} onEdit={onEdit} onDelete={onDelete} />

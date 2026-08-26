@@ -84,6 +84,7 @@ export const jobs = pgTable(
       .references(() => users.id, { onDelete: "cascade" }),
     company: text("company").notNull(),
     role: text("role").notNull(),
+    url: text("url").notNull().default(""),
     source: text("source").notNull().default(""),
     applyVia: text("apply_via").notNull().default(""),
     status: jobStatus("status").notNull().default("applied"),

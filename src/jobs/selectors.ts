@@ -25,7 +25,7 @@ export function filterAndSort(jobs: Job[], f: JobFilters): Job[] {
     if (f.status && j.status !== f.status) return false;
     if (f.source && (j.source || "") !== f.source) return false;
     if (q) {
-      const hay = [j.company, j.role, j.source, j.applyVia, j.contact, j.notes]
+      const hay = [j.company, j.role, j.url, j.source, j.applyVia, j.contact, j.notes]
         .join(" ")
         .toLowerCase();
       if (!hay.includes(q)) return false;

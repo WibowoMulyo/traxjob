@@ -10,6 +10,7 @@ export interface Job {
   createdAt: string;
   company: string;
   role: string;
+  url: string;
   source: string;
   applyVia: string;
   status: JobStatus;

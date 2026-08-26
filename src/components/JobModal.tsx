@@ -45,6 +45,7 @@ interface Props {
 const emptyForm = (): JobInput => ({
   company: "",
   role: "",
+  url: "",
   source: "",
   applyVia: "Email",
   status: "applied",
@@ -65,6 +66,7 @@ export function JobModal({ open, job, onClose, onSubmit }: Props) {
         ? {
             company: job.company,
             role: job.role,
+            url: job.url,
             source: job.source,
             applyVia: job.applyVia,
             status: job.status,
@@ -85,6 +87,7 @@ export function JobModal({ open, job, onClose, onSubmit }: Props) {
       ...form,
       company: form.company.trim(),
       role: form.role.trim(),
+      url: form.url.trim(),
       source: form.source.trim(),
       contact: form.contact.trim(),
       notes: form.notes.trim(),
@@ -131,6 +134,17 @@ export function JobModal({ open, job, onClose, onSubmit }: Props) {
                 placeholder="e.g. Backend Engineer"
               />
             </div>
+          </div>
+
+          <div className="grid gap-1.5">
+            <Label htmlFor="f-url">Job posting URL</Label>
+            <Input
+              id="f-url"
+              type="url"
+              value={form.url}
+              onChange={(e) => set("url", e.target.value)}
+              placeholder="https://example.com/jobs/..."
+            />
           </div>
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -222,12 +236,12 @@ export function JobModal({ open, job, onClose, onSubmit }: Props) {
           </div>
 
           <div className="grid gap-1.5">
-            <Label htmlFor="f-contact">Contact / Link</Label>
+            <Label htmlFor="f-contact">Contact</Label>
             <Input
               id="f-contact"
               value={form.contact}
               onChange={(e) => set("contact", e.target.value)}
-              placeholder="email or job posting URL"
+              placeholder="email or recruiter name"
             />
           </div>
 

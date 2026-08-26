@@ -4,6 +4,7 @@ import { todayStr } from "./format";
 const CSV_COLS: (keyof Job)[] = [
   "company",
   "role",
+  "url",
   "source",
   "applyVia",
   "status",
