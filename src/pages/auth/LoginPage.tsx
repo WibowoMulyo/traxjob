@@ -11,9 +11,10 @@ export function LoginPage() {
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const from =
-    (location.state as { from?: { pathname: string } } | null)?.from?.pathname ??
-    "/app";
+  const from = (location.state as { from?: Location } | null)?.from;
+  const returnTo = from
+    ? `${from.pathname}${from.search}${from.hash}`
+    : "/app";
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -26,7 +27,7 @@ export function LoginPage() {
     setSubmitting(true);
     try {
       await login(email, password);
-      navigate(from, { replace: true });
+      navigate(returnTo, { replace: true });
     } catch (err) {
       setError(
         err instanceof ApiError

@@ -1,6 +1,8 @@
 node_modules
 dist
 dist-ssr
+extension/dist
+SETUP.md
 *.local
 .DS_Store
 *.log

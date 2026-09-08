@@ -5,6 +5,9 @@ import { LoginPage } from "./pages/auth/LoginPage";
 import { RegisterPage } from "./pages/auth/RegisterPage";
 import { ForgotPasswordPage } from "./pages/auth/ForgotPasswordPage";
 import { ResetPasswordPage } from "./pages/auth/ResetPasswordPage";
+import { ExtensionConnectPage } from "./pages/ExtensionConnectPage";
+import { ExtensionPage } from "./pages/ExtensionPage";
+import { PrivacyPage } from "./pages/PrivacyPage";
 import { GuestRoute, ProtectedRoute } from "./auth/guards";
 
 export function App() {
@@ -12,6 +15,9 @@ export function App() {
     <Routes>
       <Route path="/" element={<LandingPage />} />
       <Route path="/reset-password" element={<ResetPasswordPage />} />
+      <Route path="/extension/connect" element={<ExtensionConnectPage />} />
+      <Route path="/extension" element={<ExtensionPage />} />
+      <Route path="/privacy" element={<PrivacyPage />} />
 
       <Route element={<GuestRoute />}>
         <Route path="/login" element={<LoginPage />} />

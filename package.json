@@ -14,7 +14,10 @@
     "db:seed": "tsx db/seed.ts",
     "server:dev": "tsx watch server/index.ts",
     "server:start": "tsx server/index.ts",
-    "check:server": "tsc -p tsconfig.server.json --noEmit"
+    "check:server": "tsc -p tsconfig.server.json --noEmit",
+    "extension:check": "tsc -p extension/tsconfig.json --noEmit",
+    "extension:test": "tsx --test src/jobs/statuses.test.ts src/jobs/selectors.test.ts extension/src/parsers/index.test.ts extension/src/contentBridge.test.ts extension/src/content.test.ts server/lib/authTokens.test.ts",
+    "extension:build": "tsx extension/build.ts"
   },
   "dependencies": {
     "@node-rs/argon2": "^2.0.2",

@@ -62,6 +62,10 @@ documented in [`design.md`](./design.md) — the source of truth for any UI work
 - Summary stats by status
 - Export to JSON & CSV, import from JSON (merge with de-duplication)
 - Light / dark theme, responsive layout, keyboard-accessible
+- Browser extension with editable import from LinkedIn, JobStreet, Glints,
+  MagangHub, Kalibrr, Indeed, Pintarnya, and Dealls
+
+See DEPLOY.md for production deployment and extension distribution instructions.
 
 ## Roadmap
 

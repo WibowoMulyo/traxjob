@@ -1,0 +1,50 @@
+{
+  "manifest_version": 3,
+  "name": "TraxJob Importer",
+  "description": "Import job postings into TraxJob, edit the details, and save them to your application tracker.",
+  "version": "1.0.0",
+  "permissions": ["identity", "scripting", "storage"],
+  "icons": {
+    "128": "icon128.png"
+  },
+  "host_permissions": [
+    "https://traxjob.vercel.app/*",
+    "https://*.linkedin.com/*",
+    "https://*.jobstreet.com/*",
+    "https://*.glints.com/*",
+    "https://maganghub.kemnaker.go.id/*",
+    "https://*.kalibrr.com/*",
+    "https://*.kalibrr.id/*",
+    "https://*.indeed.com/*",
+    "https://*.pintarnya.com/*",
+    "https://*.dealls.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_title": "Save to TraxJob",
+    "default_icon": {
+      "128": "icon128.png"
+    },
+    "default_popup": "index.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.linkedin.com/*",
+        "https://*.jobstreet.com/*",
+        "https://*.glints.com/*",
+        "https://maganghub.kemnaker.go.id/*",
+        "https://*.kalibrr.com/*",
+        "https://*.kalibrr.id/*",
+        "https://*.indeed.com/*",
+        "https://*.pintarnya.com/*",
+        "https://*.dealls.com/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

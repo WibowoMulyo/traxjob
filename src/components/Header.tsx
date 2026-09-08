@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowDownUp, Download, LogOut, Moon, Plus, Sun, Upload } from "lucide-react";
+import { ArrowDownUp, Download, LogOut, Moon, Plus, Puzzle, Sun, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -37,7 +37,7 @@ export function Header({
   const { user, logout } = useAuth();
 
   return (
-    <header className="sticky top-0 z-20 flex items-center justify-between gap-4 border-b border-md-border bg-md-bg/70 px-4 py-3.5 backdrop-blur-md sm:px-6">
+    <header className="sticky top-0 z-30 flex items-center justify-between gap-4 border-b border-md-border bg-md-bg/90 px-4 py-3.5 shadow-elev-1 backdrop-blur-md sm:px-6">
       <h1 className="m-0 flex min-w-0 items-center gap-2.5 text-xl font-medium tracking-[-0.01em]">
         <Link
           to="/"
@@ -61,7 +61,13 @@ export function Header({
           <span className="hidden sm:inline">Add Application</span>
         </Button>
 
-        {/* Import / export */}
+        <Button asChild variant="ghost" aria-label="Browser extension">
+          <Link to="/extension">
+            <Puzzle />
+            <span className="hidden sm:inline">Extension</span>
+          </Link>
+        </Button>
+
         <DropdownMenu modal={false}>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" aria-label="Import and export data">
@@ -87,7 +93,6 @@ export function Header({
           </DropdownMenuContent>
         </DropdownMenu>
 
-        {/* Account: profile, theme, log out */}
         {user && (
           <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>

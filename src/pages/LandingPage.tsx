@@ -80,10 +80,8 @@ function LandingBackdrop() {
       aria-hidden
       className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
     >
-      {/* little-dots texture across the entire page */}
       <div className="landing-grid absolute inset-0 text-md-outline opacity-50" />
 
-      {/* soft, diffuse ambient color (kept very subtle) across every section */}
       <div className="absolute -top-24 -right-24 h-[34rem] w-[34rem] animate-[blob-drift-a_24s_ease-in-out_infinite_alternate] rounded-full bg-md-primary opacity-[0.12] blur-[110px]" />
       <div className="absolute top-[12%] -left-28 h-[30rem] w-[30rem] animate-[blob-drift-b_30s_ease-in-out_infinite_alternate] rounded-full bg-md-tertiary opacity-[0.1] blur-[110px]" />
       <div className="absolute top-[32%] -right-28 h-[32rem] w-[32rem] animate-[blob-drift-c_26s_ease-in-out_infinite_alternate] rounded-full bg-md-secondary-container opacity-[0.16] blur-[120px]" />
@@ -156,12 +154,17 @@ function Hero() {
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-3">
             {user ? (
-              <Button asChild size="lg" className="text-base">
-                <Link to="/app">
-                  Open TraxJob
-                  <ArrowRight />
-                </Link>
-              </Button>
+              <>
+                <Button asChild size="lg" className="text-base">
+                  <Link to="/app">
+                    Open TraxJob
+                    <ArrowRight />
+                  </Link>
+                </Button>
+                <Button asChild size="lg" variant="outline" className="text-base">
+                  <Link to="/extension">Browser extension</Link>
+                </Button>
+              </>
             ) : (
               <>
                 <Button asChild size="lg" className="text-base">
@@ -173,6 +176,9 @@ function Hero() {
                 <Button asChild size="lg" variant="outline" className="text-base">
                   <Link to="/login">Log in</Link>
                 </Button>
+                <Button asChild size="lg" variant="ghost" className="text-base">
+                  <Link to="/extension">Browser extension</Link>
+                </Button>
               </>
             )}
           </div>
@@ -183,7 +189,6 @@ function Hero() {
           )}
         </div>
 
-        {/* Product preview mock */}
         <div className="relative">
           <div className="rounded-md-xl border border-md-border bg-md-surface-container p-5 shadow-elev-3">
             <div className="mb-4 flex items-center gap-2.5">
@@ -353,6 +358,12 @@ function LandingFooter() {
           </span>
         </div>
         <div className="flex items-center gap-5 text-sm text-md-muted">
+          <Link to="/extension" className="transition-colors hover:text-md-text">
+            Extension
+          </Link>
+          <Link to="/privacy" className="transition-colors hover:text-md-text">
+            Privacy
+          </Link>
           <a
             href="https://github.com/WibowoMulyo/traxjob"
             target="_blank"
