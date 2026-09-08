@@ -29,11 +29,6 @@ function withValidId(job: Job, taken: Set<string>): Job {
   };
 }
 
-/**
- * Owns all job state and CRUD logic against the API. Components call these
- * actions and never touch storage directly. Pass a different repository to
- * swap the backend (e.g. localStorage in tests).
- */
 export function useJobs(repository?: JobsRepository) {
   const repo = useMemo(() => repository ?? new ApiRepository(), [repository]);
   const [jobs, setJobs] = useState<Job[]>([]);

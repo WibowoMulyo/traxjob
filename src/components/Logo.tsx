@@ -3,11 +3,6 @@ interface LogoProps {
   title?: string;
 }
 
-/**
- * TraxJob brand mark — three progress nodes along a path ending in a checked
- * circle, on a teal rounded square. Recreated as SVG so it stays crisp at any
- * size and works on any background. (Original raster lives at public/logo.png.)
- */
 export function Logo({ className, title = "TraxJob" }: LogoProps) {
   return (
     <svg

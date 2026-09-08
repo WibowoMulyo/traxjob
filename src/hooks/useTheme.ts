@@ -3,7 +3,6 @@ import { useCallback, useEffect, useState } from "react";
 const THEME_KEY = "jobTracker.theme";
 export type Theme = "light" | "dark";
 
-/** Light/dark theme state, applied as a `.dark` class on <html> and persisted. */
 export function useTheme() {
   const [theme, setTheme] = useState<Theme>(
     () => (localStorage.getItem(THEME_KEY) as Theme) || "light",

@@ -39,14 +39,13 @@ export function exportCsv(jobs: Job[]): void {
   const body = jobs
     .map((j) => CSV_COLS.map((c) => csvCell(j[c])).join(","))
     .join("\n");
-  // Leading BOM so Excel/Sheets reads UTF-8 correctly.
+  /* BOM makes UTF-8 CSV readable by Excel and Sheets. */
   const blob = new Blob(["﻿" + head + "\n" + body], {
     type: "text/csv;charset=utf-8",
   });
   downloadBlob(blob, `job-tracker-${todayStr()}.csv`);
 }
 
-/** Read and parse a user-selected JSON file into a list of jobs. */
 export function parseImportFile(file: File): Promise<Job[]> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();

@@ -1,6 +1,5 @@
 import type { NextFunction, Request, RequestHandler, Response } from "express";
 
-/* Forwards rejected promises from async handlers to Express' error middleware. */
 export function asyncHandler(
   fn: (req: Request, res: Response, next: NextFunction) => Promise<unknown>,
 ): RequestHandler {

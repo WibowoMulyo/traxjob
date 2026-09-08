@@ -36,7 +36,6 @@ import {
 
 interface Props {
   open: boolean;
-  /** The job being edited, or null when adding a new one. */
   job: Job | null;
   onClose: () => void;
   onSubmit: (data: JobInput) => void;
@@ -58,7 +57,6 @@ export function JobModal({ open, job, onClose, onSubmit }: Props) {
   const [form, setForm] = useState<JobInput>(emptyForm);
   const [dateOpen, setDateOpen] = useState(false);
 
-  // Repopulate the form whenever the modal opens (add) or the target changes.
   useEffect(() => {
     if (!open) return;
     setForm(

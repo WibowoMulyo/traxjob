@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { Toaster as Sonner, type ToasterProps } from "sonner";
 
-/* Track the app's light/dark mode by observing the `.dark` class on <html>
-   (set by useTheme) so toasts match the current theme. */
+/* Keep toast colors aligned with the app's `.dark` class. */
 function useThemeMode(): "light" | "dark" {
   const [mode, setMode] = useState<"light" | "dark">(() =>
     document.documentElement.classList.contains("dark") ? "dark" : "light",

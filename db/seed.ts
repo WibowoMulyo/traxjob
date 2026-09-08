@@ -17,7 +17,6 @@ async function main(): Promise<void> {
     .limit(1);
 
   if (existing.length > 0) {
-    /* Idempotent: re-running resets the demo account's password. */
     await db
       .update(schema.users)
       .set({ passwordHash, name: DEMO_NAME })

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 
-/** Reactive CSS media-query match (e.g. "(min-width: 768px)"). */
 export function useMediaQuery(query: string): boolean {
   const [matches, setMatches] = useState(
     () => window.matchMedia(query).matches,

@@ -10,7 +10,6 @@ function AuthLoading() {
   );
 }
 
-/* Requires a logged-in user; otherwise redirects to /login (remembering origin). */
 export function ProtectedRoute() {
   const { user, loading } = useAuth();
   const location = useLocation();
@@ -20,7 +19,6 @@ export function ProtectedRoute() {
   return <Outlet />;
 }
 
-/* For login/register/forgot — sends already-authenticated users to the app. */
 export function GuestRoute() {
   const { user, loading } = useAuth();
 

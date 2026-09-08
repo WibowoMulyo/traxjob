@@ -30,10 +30,6 @@ type ConfirmFn = (options: ConfirmOptions) => Promise<boolean>;
 
 const ConfirmContext = createContext<ConfirmFn | undefined>(undefined);
 
-/**
- * Provides an async `confirm()` that resolves true/false from a styled
- * AlertDialog — a drop-in, promise-based replacement for window.confirm.
- */
 export function ConfirmProvider({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState<ConfirmOptions | null>(null);
@@ -47,8 +43,7 @@ export function ConfirmProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
-  /* Resolve once and close — guarded so the auto-close after a button click
-     doesn't also resolve with `false`. */
+  /* Prevent the dialog auto-close from resolving a confirmed action as false. */
   const settle = useCallback((result: boolean) => {
     resolverRef.current?.(result);
     resolverRef.current = null;

@@ -3,7 +3,6 @@ import type { JobsRepository } from "./JobsRepository";
 
 const STORE_KEY = "jobTracker.v1";
 
-/** Browser localStorage implementation of {@link JobsRepository}. */
 export class LocalStorageRepository implements JobsRepository {
   private read(): Job[] {
     try {

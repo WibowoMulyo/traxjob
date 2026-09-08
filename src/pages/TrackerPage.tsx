@@ -25,7 +25,7 @@ export function TrackerPage() {
   const [sortKey, setSortKey] = useState<SortKey>("dateApplied");
   const [sortDir, setSortDir] = useState<1 | -1>(-1);
 
-  /* Modal state: undefined = closed, null = adding, Job = editing */
+  /* undefined = closed; null = adding; a Job = editing. */
   const [editing, setEditing] = useState<Job | null | undefined>(undefined);
   const modalOpen = editing !== undefined;
 

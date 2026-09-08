@@ -21,8 +21,7 @@ interface Props {
   onSource: (v: string) => void;
 }
 
-// Radix Select forbids an empty-string item value, so we use "all" as the
-// sentinel for the unfiltered option and translate it back to "".
+/* Radix Select forbids empty-string values, so "all" represents no filter. */
 const ALL = "all";
 
 const triggerCls =

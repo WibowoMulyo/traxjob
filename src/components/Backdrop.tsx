@@ -1,4 +1,3 @@
-/** Decorative organic blur shapes — signature Material You atmosphere. */
 export function Backdrop() {
   return (
     <div
