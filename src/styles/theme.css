@@ -1,45 +1,37 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-/* Class-based dark mode: `dark:` variants key off the `.dark` class on <html>. */
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* ============================================================
-   Material You (MD3) raw token values — switch per theme.
-   See design.md for the full reference. These are the single
-   source of truth; the @theme block below exposes them to
-   Tailwind so utilities like `bg-md-primary` resolve to them.
-   ============================================================ */
 :root {
-  /* TraxJob palette — teal primary, warm-neutral surfaces, earthy accent */
-  --md-bg: #f1efe8; /* Off-White background */
-  --md-surface-container: #fbfaf6; /* Cards: lighter than bg for lift */
-  --md-surface-low: #e8e5db; /* Recessed inputs */
-  --md-primary: #0f6e56; /* Teal */
-  --md-primary-hover: #085041; /* Dark Teal */
+  --md-bg: #f1efe8;
+  --md-surface-container: #fbfaf6;
+  --md-surface-low: #e8e5db;
+  --md-primary: #0f6e56;
+  --md-primary-hover: #085041;
   --md-on-primary: #ffffff;
-  --md-secondary-container: #e1f5ee; /* Light Teal (Primary Tint) */
+  --md-secondary-container: #e1f5ee;
   --md-on-secondary-container: #073f31;
-  --md-tertiary: #d85a30; /* Orange accent */
+  --md-tertiary: #d85a30;
   --md-on-tertiary: #ffffff;
-  --md-text: #2c2c2a; /* Primary text (Dark Gray) */
-  --md-muted: #5f5e5a; /* Secondary text (Medium Gray) */
+  --md-text: #2c2c2a;
+  --md-muted: #5f5e5a;
   --md-outline: #a8a596;
-  --md-border: #d3d1c7; /* Light Gray */
+  --md-border: #d3d1c7;
 
   --md-wishlist: #5f5e5a;
   --md-wishlist-container: #e7e4da;
   --md-on-wishlist-container: #44433f;
-  --md-applied: #185fa5; /* Blue */
+  --md-applied: #185fa5;
   --md-applied-container: #dce9f6;
   --md-on-applied-container: #0a2e54;
-  --md-interview: #ba7517; /* Orange-Brown */
+  --md-interview: #ba7517;
   --md-interview-container: #f6e7cc;
   --md-on-interview-container: #4a2e05;
-  --md-offer: #3b6d11; /* Green */
+  --md-offer: #3b6d11;
   --md-offer-container: #deefc8;
   --md-on-offer-container: #1b3406;
-  --md-rejected: #a32d2d; /* Red */
+  --md-rejected: #a32d2d;
   --md-rejected-container: #f5dad8;
   --md-on-rejected-container: #4e1010;
   --md-source-container: #e7e4da;
@@ -49,8 +41,6 @@
   --md-elev-2: 0 2px 6px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.08);
   --md-elev-3: 0 6px 16px rgba(0, 0, 0, 0.1), 0 12px 28px rgba(0, 0, 0, 0.1);
 
-  /* --- shadcn/ui + ReUI semantic tokens, mapped onto the MD3 palette so
-         their components inherit the Material You look automatically. --- */
   --radius: 0.75rem;
   --background: var(--md-bg);
   --foreground: var(--md-text);
@@ -95,16 +85,15 @@
 }
 
 .dark {
-  /* TraxJob — dark variant (warm-neutral darks, lightened teal/accent) */
   --md-bg: #1a1a17;
   --md-surface-container: #232320;
   --md-surface-low: #1e1e1b;
-  --md-primary: #5fd3b2; /* Lightened teal for dark surfaces */
+  --md-primary: #5fd3b2;
   --md-primary-hover: #7bddc0;
   --md-on-primary: #00382b;
   --md-secondary-container: #224e41;
   --md-on-secondary-container: #cdeee0;
-  --md-tertiary: #f2a074; /* Lightened orange accent */
+  --md-tertiary: #f2a074;
   --md-on-tertiary: #4d1b00;
   --md-text: #eceae0;
   --md-muted: #bdbbb0;
@@ -133,9 +122,6 @@
   --md-elev-2: 0 2px 6px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.4);
   --md-elev-3: 0 6px 16px rgba(0, 0, 0, 0.45), 0 12px 28px rgba(0, 0, 0, 0.5);
 
-  /* shadcn tokens above reference --md-* vars, so they re-resolve here
-     automatically. Destructive uses the lighter rejected red in dark so the
-     log-out / delete actions stay legible as text on the dark menu. */
   --destructive: var(--md-rejected);
   --success: var(--color-emerald-500);
   --success-foreground: var(--color-emerald-600);
@@ -147,10 +133,6 @@
   --invert-foreground: var(--color-zinc-50);
 }
 
-/* ============================================================
-   Map raw tokens -> Tailwind theme. `inline` makes the generated
-   utilities reference the var() (so they re-resolve under .dark).
-   ============================================================ */
 @theme inline {
   --font-sans: "Inter Tight", system-ui, sans-serif;
   --ease-md: cubic-bezier(0.2, 0, 0, 1);
@@ -197,7 +179,6 @@
   --shadow-elev-2: var(--md-elev-2);
   --shadow-elev-3: var(--md-elev-3);
 
-  /* shadcn/ui + ReUI utility namespace (bg-background, text-primary, etc.) */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -249,7 +230,7 @@
 @layer base {
   html,
   body {
-    overflow-x: hidden;
+    overflow-x: clip;
   }
   html {
     scroll-behavior: smooth;
@@ -270,7 +251,6 @@
   }
 }
 
-/* Modal / overlay entrance animations */
 @keyframes md-overlay-in {
   from {
     opacity: 0;
@@ -289,7 +269,6 @@
     transform: none;
   }
 }
-/* Slow, organic drift for decorative background blobs (landing page). */
 @keyframes blob-drift-a {
   0% {
     transform: translate(0, 0) scale(1);
@@ -316,7 +295,6 @@
 }
 
 @layer components {
-  /* Little-dots texture across the whole page; soft fade at top/bottom. */
   .landing-grid {
     background-image: radial-gradient(currentColor 1px, transparent 1.5px);
     background-size: 28px 28px;

@@ -1,9 +1,17 @@
 export type JobStatus =
   | "wishlist"
   | "applied"
+  | "screening"
+  | "psychological_test"
+  | "technical_test"
   | "interview"
+  | "interview_hr"
+  | "interview_user"
+  | "final_interview"
   | "offer"
-  | "rejected";
+  | "accepted"
+  | "rejected"
+  | "withdrawn";
 
 export interface Job {
   id: string;
@@ -19,8 +27,6 @@ export interface Job {
   notes: string;
 }
 
-/** The editable fields of a job (everything except identity/metadata). */
 export type JobInput = Omit<Job, "id" | "createdAt">;
 
-/** Columns that the table can sort by. */
 export type SortKey = "company" | "source" | "applyVia" | "status" | "dateApplied";

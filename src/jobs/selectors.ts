@@ -11,13 +11,20 @@ export interface JobFilters {
 export interface StatCounts {
   total: number;
   applied: number;
+  screening: number;
+  psychological_test: number;
+  technical_test: number;
   interview: number;
+  interview_hr: number;
+  interview_user: number;
+  final_interview: number;
   offer: number;
+  accepted: number;
   rejected: number;
+  withdrawn: number;
   wishlist: number;
 }
 
-/** Apply search + filters and sort, returning a new array. */
 export function filterAndSort(jobs: Job[], f: JobFilters): Job[] {
   const q = f.query.trim().toLowerCase();
 
@@ -38,6 +45,15 @@ export function filterAndSort(jobs: Job[], f: JobFilters): Job[] {
     const vb = (b[f.sortKey] || "").toString().toLowerCase();
     if (va < vb) return -1 * f.sortDir;
     if (va > vb) return 1 * f.sortDir;
+
+    /* Keep newest records first when application dates match or are empty. */
+    if (f.sortKey === "dateApplied") {
+      const ca = a.createdAt.toLowerCase();
+      const cb = b.createdAt.toLowerCase();
+      if (ca < cb) return -1 * f.sortDir;
+      if (ca > cb) return 1 * f.sortDir;
+    }
+
     return 0;
   });
 
@@ -48,9 +64,17 @@ export function computeStats(jobs: Job[]): StatCounts {
   const counts: StatCounts = {
     total: jobs.length,
     applied: 0,
+    screening: 0,
+    psychological_test: 0,
+    technical_test: 0,
     interview: 0,
+    interview_hr: 0,
+    interview_user: 0,
+    final_interview: 0,
     offer: 0,
+    accepted: 0,
     rejected: 0,
+    withdrawn: 0,
     wishlist: 0,
   };
   for (const j of jobs) {
@@ -61,7 +85,6 @@ export function computeStats(jobs: Job[]): StatCounts {
   return counts;
 }
 
-/** Distinct, sorted source names present in the data. */
 export function uniqueSources(jobs: Job[]): string[] {
   return [...new Set(jobs.map((j) => j.source).filter(Boolean))].sort();
 }
