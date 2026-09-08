@@ -1,8 +1,7 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
 import { createApp } from "../server/app.js";
 
-/* Serve the whole Express app as one Vercel serverless function. The vercel.json
-   rewrite funnels every /api/* request here; Express routes on the original URL. */
+/* Vercel rewrites /api/* requests to this serverless Express handler. */
 const app = createApp() as unknown as (
   req: IncomingMessage,
   res: ServerResponse,
@@ -12,8 +11,7 @@ export default function handler(
   req: IncomingMessage,
   res: ServerResponse,
 ): void {
-  /* The Express routers are mounted under /api; restore the prefix if the
-     platform invoked this function with it stripped. */
+  /* Restore /api when the platform strips it before invoking the handler. */
   if (req.url && !req.url.startsWith("/api")) {
     req.url = `/api${req.url}`;
   }

@@ -4,12 +4,16 @@ import { z } from "zod";
 import { db, schema } from "../../db/index.js";
 import { env } from "../env.js";
 import { asyncHandler } from "../lib/asyncHandler.js";
+import { bearerToken } from "../lib/authTokens.js";
 import { sendPasswordResetEmail } from "../lib/email.js";
 import { hashPassword, verifyPassword } from "../lib/password.js";
 import {
   createSession,
+  createSessionToken,
   destroyAllUserSessions,
   destroySession,
+  destroyToken,
+  getUserFromRequest,
 } from "../lib/sessions.js";
 import { generateToken, hashToken } from "../lib/tokens.js";
 import { requireAuth } from "../middleware/requireAuth.js";
@@ -31,6 +35,23 @@ const registerSchema = z.object({
 });
 const forgotSchema = z.object({ email });
 const resetSchema = z.object({ token: z.string().min(1), password });
+const extensionAuthorizeSchema = z.object({
+  redirectUri: z.string().url(),
+  state: z.string().min(1).max(256),
+});
+const extensionTokenSchema = z.object({
+  code: z.string().min(1),
+  redirectUri: z.string().url(),
+});
+
+const EXTENSION_CODE_TTL_MS = 5 * 60 * 1000;
+
+function extensionRedirectAllowed(redirectUri: string): boolean {
+  return env.EXTENSION_REDIRECT_URLS.split(",")
+    .map((value) => value.trim())
+    .filter(Boolean)
+    .includes(redirectUri);
+}
 
 interface UserRow {
   id: string;
@@ -122,6 +143,100 @@ authRouter.post(
   }),
 );
 
+authRouter.get(
+  "/extension/authorize",
+  asyncHandler(async (req, res) => {
+    const parsed = extensionAuthorizeSchema.safeParse(req.query);
+    if (!parsed.success || !extensionRedirectAllowed(parsed.data.redirectUri)) {
+      res.status(400).json({ error: "Invalid extension redirect URI" });
+      return;
+    }
+
+    const user = await getUserFromRequest(req);
+    if (!user) {
+      const loginUrl = new URL("/extension/connect", env.CLIENT_ORIGIN);
+      loginUrl.searchParams.set("authorize", req.originalUrl);
+      res.redirect(loginUrl.toString());
+      return;
+    }
+
+    const code = generateToken();
+    await db.insert(schema.extensionAuthCodes).values({
+      userId: user.id,
+      codeHash: hashToken(code),
+      redirectUri: parsed.data.redirectUri,
+      expiresAt: new Date(Date.now() + EXTENSION_CODE_TTL_MS),
+    });
+
+    const callback = new URL(parsed.data.redirectUri);
+    callback.searchParams.set("code", code);
+    callback.searchParams.set("state", parsed.data.state);
+    res.redirect(callback.toString());
+  }),
+);
+
+authRouter.post(
+  "/extension/token",
+  asyncHandler(async (req, res) => {
+    const parsed = extensionTokenSchema.safeParse(req.body);
+    if (!parsed.success) {
+      res.status(400).json({ error: "Invalid extension authorization code" });
+      return;
+    }
+
+    const [code] = await db
+      .update(schema.extensionAuthCodes)
+      .set({ usedAt: new Date() })
+      .where(
+        and(
+          eq(schema.extensionAuthCodes.codeHash, hashToken(parsed.data.code)),
+          eq(schema.extensionAuthCodes.redirectUri, parsed.data.redirectUri),
+          gt(schema.extensionAuthCodes.expiresAt, new Date()),
+          isNull(schema.extensionAuthCodes.usedAt),
+        ),
+      )
+      .returning({ userId: schema.extensionAuthCodes.userId });
+    if (!code) {
+      res.status(400).json({ error: "Invalid or expired extension authorization code" });
+      return;
+    }
+
+    const [userRow] = await db
+      .select({
+        id: schema.users.id,
+        email: schema.users.email,
+        name: schema.users.name,
+        emailVerified: schema.users.emailVerified,
+        createdAt: schema.users.createdAt,
+      })
+      .from(schema.users)
+      .where(eq(schema.users.id, code.userId))
+      .limit(1);
+    if (!userRow) {
+      res.status(400).json({ error: "User not found" });
+      return;
+    }
+
+    const session = await createSessionToken(code.userId, {
+      userAgent: "TraxJob extension",
+    });
+    res.json({
+      token: session.token,
+      expiresAt: session.expiresAt.toISOString(),
+      user: toPublicUser(userRow),
+    });
+  }),
+);
+
+authRouter.post(
+  "/extension/revoke",
+  asyncHandler(async (req, res) => {
+    const token = bearerToken(req.get("authorization"));
+    if (token) await destroyToken(token);
+    res.status(204).end();
+  }),
+);
+
 authRouter.get("/me", requireAuth, (req, res) => {
   res.json({ user: req.user });
 });
@@ -147,7 +262,7 @@ authRouter.post(
       await db.insert(schema.passwordResetTokens).values({
         userId: user.id,
         tokenHash: hashToken(token),
-        expiresAt: new Date(Date.now() + 1000 * 60 * 60) /* 1 hour */,
+        expiresAt: new Date(Date.now() + 1000 * 60 * 60),
       });
       const resetUrl = `${env.CLIENT_ORIGIN}/reset-password?token=${token}`;
       await sendPasswordResetEmail(email, resetUrl);

@@ -19,9 +19,17 @@ function getUserId(req: Request): string {
 const statusEnum = z.enum([
   "wishlist",
   "applied",
+  "screening",
+  "psychological_test",
+  "technical_test",
   "interview",
+  "interview_hr",
+  "interview_user",
+  "final_interview",
   "offer",
+  "accepted",
   "rejected",
+  "withdrawn",
 ]);
 const dateApplied = z
   .union([z.string().regex(/^\d{4}-\d{2}-\d{2}$/), z.literal("")])
@@ -164,7 +172,6 @@ jobsRouter.delete(
   }),
 );
 
-/* Replace the caller's entire collection (used by import / bulk save). */
 jobsRouter.put(
   "/",
   asyncHandler(async (req, res) => {

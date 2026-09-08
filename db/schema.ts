@@ -9,13 +9,20 @@ import {
   uuid,
 } from "drizzle-orm/pg-core";
 
-/* Application pipeline stages — mirrors the client `JobStatus` union. */
 export const jobStatus = pgEnum("job_status", [
   "wishlist",
   "applied",
+  "screening",
+  "psychological_test",
+  "technical_test",
   "interview",
+  "interview_hr",
+  "interview_user",
+  "final_interview",
   "offer",
+  "accepted",
   "rejected",
+  "withdrawn",
 ]);
 
 /* Accounts. Email is stored lower-cased by the app for case-insensitive
@@ -52,6 +59,24 @@ export const sessions = pgTable(
       .defaultNow(),
   },
   (t) => [index("sessions_user_id_idx").on(t.userId)],
+);
+
+export const extensionAuthCodes = pgTable(
+  "extension_auth_codes",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    codeHash: text("code_hash").notNull().unique(),
+    redirectUri: text("redirect_uri").notNull(),
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+    usedAt: timestamp("used_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [index("extension_auth_codes_user_id_idx").on(t.userId)],
 );
 
 /* Single-use, time-limited tokens for the "forgot password" flow. Only the

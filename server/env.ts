@@ -6,6 +6,7 @@ const schema = z.object({
   PORT: z.coerce.number().default(3001),
   DATABASE_URL: z.string().min(1, "DATABASE_URL is required"),
   CLIENT_ORIGIN: z.string().url().default("http://localhost:5173"),
+  EXTENSION_REDIRECT_URLS: z.string().default(""),
   /* Gmail SMTP — optional in dev; when unset, reset links are logged instead. */
   GMAIL_USER: z.string().optional(),
   GMAIL_APP_PASSWORD: z.string().optional(),
