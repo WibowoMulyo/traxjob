@@ -38,7 +38,7 @@ Import a user-selected job posting into the user's TraxJob application tracker.
 
 ## Privacy declarations
 
-Privacy policy: https://traxjob.vercel.app/privacy
+Privacy policy: https://www.traxjob.my.id/privacy
 
 The extension handles job-page content, application fields entered by the user, account identity, and authentication information. The data is used only to provide the import and tracking feature and is sent to TraxJob over HTTPS when the user saves an application.
 

@@ -212,7 +212,7 @@ function App() {
             account only when you save it.
           </p>
           <a
-            href="https://traxjob.vercel.app/privacy"
+            href="https://www.traxjob.my.id/privacy"
             target="_blank"
             rel="noopener noreferrer"
           >

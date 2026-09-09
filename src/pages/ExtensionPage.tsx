@@ -1,4 +1,4 @@
-import { ArrowLeft, Check, ExternalLink, Puzzle } from "lucide-react";
+import { ArrowLeft, Check, Download, Puzzle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/Logo";
@@ -15,7 +15,7 @@ const SUPPORTED_SITES = [
 ];
 
 export function ExtensionPage() {
-  const storeUrl = import.meta.env.VITE_EXTENSION_STORE_URL?.trim();
+  const downloadUrl = import.meta.env.VITE_EXTENSION_DOWNLOAD_URL?.trim();
 
   return (
     <div className="min-h-svh bg-md-bg">
@@ -48,16 +48,16 @@ export function ExtensionPage() {
             your TraxJob account.
           </p>
           <div className="mt-7 flex flex-wrap items-center gap-3">
-            {storeUrl ? (
+            {downloadUrl ? (
               <Button asChild size="lg">
-                <a href={storeUrl} target="_blank" rel="noopener noreferrer">
-                  Install from Chrome Web Store
-                  <ExternalLink />
+                <a href={downloadUrl} download>
+                  Download Extension
+                  <Download />
                 </a>
               </Button>
             ) : (
               <p className="rounded-full bg-md-secondary-container px-4 py-2 text-sm font-medium text-md-on-secondary-container">
-                Chrome Web Store listing coming soon.
+                Extension download is being prepared.
               </p>
             )}
             <Button asChild variant="outline" size="lg">
@@ -96,6 +96,26 @@ export function ExtensionPage() {
                 </li>
               ))}
             </ul>
+          </div>
+
+          <div className="rounded-md-lg bg-md-surface-container p-6 shadow-elev-1 md:col-span-2">
+            <h2 className="text-xl font-semibold">Install the extension</h2>
+            <ol className="mt-5 grid gap-3 text-sm text-md-muted sm:grid-cols-2">
+              {[
+                "Download the extension ZIP.",
+                "Extract the ZIP into a folder.",
+                "Open chrome://extensions in Chrome.",
+                "Turn on Developer mode.",
+                "Click Load unpacked and select the extracted folder.",
+              ].map((step, index) => (
+                <li key={step} className="flex gap-3">
+                  <span className="grid size-6 shrink-0 place-items-center rounded-full bg-md-primary text-xs font-semibold text-md-on-primary">
+                    {index + 1}
+                  </span>
+                  <span>{step}</span>
+                </li>
+              ))}
+            </ol>
           </div>
         </section>
       </main>

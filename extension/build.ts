@@ -13,7 +13,7 @@ const manifest = JSON.parse(await readFile(manifestPath, "utf8")) as {
   [key: string]: unknown;
 };
 const apiOrigin = new URL(
-  process.env.VITE_TRAXJOB_URL ?? "https://traxjob.vercel.app",
+  process.env.VITE_TRAXJOB_URL ?? "https://www.traxjob.my.id",
 ).origin;
 manifest.host_permissions = [
   ...new Set([...manifest.host_permissions, `${apiOrigin}/*`]),

@@ -2,6 +2,7 @@ node_modules
 dist
 dist-ssr
 extension/dist
+traxjob-importer-*.zip
 SETUP.md
 *.local
 .DS_Store

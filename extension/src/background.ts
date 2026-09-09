@@ -1,7 +1,7 @@
 import { hasJobMetadata, sourceFromUrl, type ExtractedJob } from "./parsers/index.js";
 import { shouldInjectContentScript } from "./contentBridge.js";
 
-const API_BASE_URL = (import.meta.env.VITE_TRAXJOB_URL ?? "https://traxjob.vercel.app").replace(/\/$/, "");
+const API_BASE_URL = (import.meta.env.VITE_TRAXJOB_URL ?? "https://www.traxjob.my.id").replace(/\/$/, "");
 const TOKEN_KEY = "traxjob.extension.token";
 const REDIRECT_PATH = "traxjob-callback";
 
