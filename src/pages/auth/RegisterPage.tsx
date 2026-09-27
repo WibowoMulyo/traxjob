@@ -2,7 +2,7 @@ import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/auth/AuthContext";
 import { ApiError } from "@/lib/api";
-import { AuthLayout } from "@/components/AuthLayout";
+import { AuthSplitLayout } from "@/components/AuthSplitLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -40,7 +40,8 @@ export function RegisterPage() {
   };
 
   return (
-    <AuthLayout
+    <AuthSplitLayout
+      variant="register"
       title="Create your account"
       subtitle="Start tracking your job search in seconds"
       footer={
@@ -61,7 +62,7 @@ export function RegisterPage() {
             {error}
           </p>
         )}
-        <div className="grid gap-1.5">
+        <div className="input-focus-glow grid gap-1.5 rounded-md-md">
           <Label htmlFor="name">Name (optional)</Label>
           <Input
             id="name"
@@ -71,7 +72,7 @@ export function RegisterPage() {
             placeholder="Jane Doe"
           />
         </div>
-        <div className="grid gap-1.5">
+        <div className="input-focus-glow grid gap-1.5 rounded-md-md">
           <Label htmlFor="email">Email</Label>
           <Input
             id="email"
@@ -82,7 +83,7 @@ export function RegisterPage() {
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-        <div className="grid gap-1.5">
+        <div className="input-focus-glow grid gap-1.5 rounded-md-md">
           <Label htmlFor="password">Password</Label>
           <Input
             id="password"
@@ -99,6 +100,6 @@ export function RegisterPage() {
           {submitting ? "Creating account…" : "Create account"}
         </Button>
       </form>
-    </AuthLayout>
+    </AuthSplitLayout>
   );
 }
