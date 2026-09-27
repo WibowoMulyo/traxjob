@@ -1,6 +1,5 @@
 import { useCallback, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Loader2 } from "lucide-react";
 import type { Job, JobInput, JobStatus, SortKey } from "@/jobs/jobs.types";
 import { useJobs } from "@/jobs/useJobs";
 import { toast } from "sonner";
