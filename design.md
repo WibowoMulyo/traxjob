@@ -6,6 +6,12 @@ palette** — teal primary (`#0F6E56`), warm-neutral surfaces, and an earthy
 orange accent. Read this before adding or restyling any UI so the app stays
 visually consistent.
 
+**Design Read / dials:** landing + tracker for individual job seekers, in a warm
+Material You language, dial **ENERGY 2 / RHYTHM 2 / MOTION 2** (calm but alive:
+entrance reveals and hover feedback, no endless looping animations). The identity
+motif is the **status pipeline** (Wishlist → Applied → Interview → Offer) rendered
+in the tonal status colors.
+
 ## Tech & architecture constraints
 
 - **Stack**: Vite + React + TypeScript + Tailwind CSS v4. Components live in

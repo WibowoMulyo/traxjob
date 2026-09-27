@@ -22,31 +22,31 @@ const FEATURES = [
     icon: ListChecks,
     title: "Clear status pipeline",
     body: "Move applications through stages, see exactly where each one stands.",
-    span: "row-span-1",
+    span: "",
   },
   {
     icon: Download,
     title: "Export & import",
     body: "Your data is never locked in. Export to JSON or CSV any time.",
-    span: "row-span-1",
+    span: "",
   },
   {
     icon: ShieldCheck,
     title: "Private & secure",
     body: "Your own account, modern password hashing. Your data stays yours.",
-    span: "row-span-1",
+    span: "",
   },
   {
     icon: CalendarClock,
     title: "Notes & follow-ups",
     body: "Track recruiter names, salary ranges, and deadlines.",
-    span: "row-span-1",
+    span: "",
   },
   {
     icon: Palette,
     title: "Light & dark themes",
     body: "Calm Material You interface with polished light and dark modes.",
-    span: "sm:col-span-2",
+    span: "",
   },
 ];
 
@@ -64,7 +64,7 @@ function FlagshipCard({ visible }: { visible: boolean }) {
     <div
       {...tilt}
       style={tilt.style}
-      className={`group col-span-full overflow-hidden rounded-md-xl border border-md-border bg-gradient-to-br from-md-secondary-container/40 to-md-surface-container p-6 shadow-elev-2 transition-shadow duration-300 hover:shadow-elev-3 sm:p-8 lg:col-span-2 lg:row-span-2 ${
+      className={`group col-span-full overflow-hidden rounded-md-xl border border-md-border bg-gradient-to-br from-md-secondary-container/40 to-md-surface-container p-6 shadow-elev-2 transition-shadow duration-300 hover:shadow-elev-3 sm:p-8 md:col-span-2 md:row-span-2 ${
         visible ? "landing-reveal" : "opacity-0"
       }`}
     >
@@ -173,7 +173,7 @@ export function BentoFeatures() {
 
         <div
           ref={gridRef}
-          className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:grid-rows-3"
+          className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3"
         >
           <FlagshipCard visible={gridVisible} />
           {FEATURES.map((feature, index) => (

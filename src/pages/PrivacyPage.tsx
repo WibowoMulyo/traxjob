@@ -1,25 +1,9 @@
-import { ArrowLeft } from "lucide-react";
-import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Logo } from "@/components/Logo";
+import { PublicHeader } from "@/components/PublicHeader";
 
 export function PrivacyPage() {
   return (
     <div className="min-h-svh bg-md-bg">
-      <header className="border-b border-md-border bg-md-bg/90 px-4 py-3.5 backdrop-blur-md sm:px-6">
-        <div className="mx-auto flex max-w-[900px] items-center justify-between gap-4">
-          <Link to="/" className="flex items-center gap-2.5">
-            <Logo className="size-8" />
-            <span className="text-xl font-medium">TraxJob</span>
-          </Link>
-          <Button asChild variant="ghost">
-            <Link to="/">
-              <ArrowLeft />
-              Back to TraxJob
-            </Link>
-          </Button>
-        </div>
-      </header>
+      <PublicHeader />
 
       <main className="mx-auto max-w-[900px] px-4 py-12 sm:px-6 md:py-16">
         <article className="rounded-md-xl bg-md-surface-container p-6 shadow-elev-1 sm:p-10">
