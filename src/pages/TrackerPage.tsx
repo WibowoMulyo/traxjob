@@ -134,7 +134,7 @@ export function TrackerPage() {
           onCsv={() => exportCsv(jobs)}
         />
 
-        <div className="mx-auto max-w-[1200px] px-4 pb-2 pt-6 sm:px-6 sm:pt-8">
+        <div className="mx-auto max-w-[1200px] px-4 pb-8 pt-8 sm:px-6 sm:pt-10">
           {loading ? (
             <SkeletonLoader />
           ) : (
