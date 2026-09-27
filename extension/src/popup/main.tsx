@@ -55,11 +55,12 @@ function Field({
   [key: string]: unknown;
 }) {
   return (
-    <label className="field">
-      <span>{label}</span>
+    <label className="flex flex-col gap-1.5">
+      <span className="text-xs font-semibold text-md-muted">{label}</span>
       <input
         value={value}
         onChange={(event) => onChange(event.target.value)}
+        className="rounded-lg border border-md-border bg-md-surface-container px-3 py-2 text-sm text-md-text outline-none transition-all focus:border-md-primary focus:bg-white focus:shadow-[0_0_0_3px_rgba(15,110,86,0.12)]"
         {...props}
       />
     </label>
@@ -175,21 +176,21 @@ function App() {
     message.startsWith("Saved") || message.startsWith("Disconnected");
 
   return (
-    <main>
-      <header className="app-header">
-        <div className="brand">
-          <img className="brand-mark" src="icon128.png" alt="" />
-          <div>
-            <strong>TraxJob Importer</strong>
-            <small>Save jobs without the copy-paste</small>
+    <main className="min-h-screen bg-gradient-to-br from-md-bg to-md-surface-low p-4">
+      <header className="mb-4 flex items-center justify-between gap-3 rounded-xl bg-md-surface-container/50 p-3 shadow-sm backdrop-blur-sm">
+        <div className="flex min-w-0 items-center gap-2.5">
+          <img className="size-9 rounded-xl shadow-md" src="icon128.png" alt="" />
+          <div className="min-w-0">
+            <div className="truncate text-sm font-semibold tracking-tight text-md-text">TraxJob</div>
+            <div className="truncate text-xs text-md-muted">Extension</div>
           </div>
         </div>
-        <div className="account-state">
-          <span className={"status-dot " + (connected ? "is-connected" : "")} />
-          <span>{connected ? "Connected" : "Not connected"}</span>
+        <div className="flex shrink-0 items-center gap-2">
+          <span className={`size-2 rounded-full ${connected ? "bg-md-primary shadow-[0_0_0_3px_rgba(15,110,86,0.12)]" : "bg-md-muted"}`} />
+          <span className="text-xs text-md-muted">{connected ? "Connected" : "Disconnected"}</span>
           {connected && (
             <button
-              className="link-button"
+              className="ml-1 text-xs font-semibold text-md-primary transition-colors hover:text-md-primary-hover"
               type="button"
               onClick={() => void disconnect()}
               disabled={busy}
@@ -200,13 +201,17 @@ function App() {
         </div>
       </header>
 
-      {privacyConsent === null && <p className="message">{message}</p>}
+      {privacyConsent === null && (
+        <div className="rounded-xl bg-md-surface-container/50 p-4 text-sm text-md-muted backdrop-blur-sm">
+          {message}
+        </div>
+      )}
 
       {privacyConsent === false ? (
-        <section className="consent panel">
-          <span className="eyebrow">Privacy first</span>
-          <h1>Review before you save</h1>
-          <p>
+        <section className="overflow-hidden rounded-2xl bg-gradient-to-br from-md-surface-container to-md-surface-low p-6 shadow-md">
+          <span className="text-xs font-bold uppercase tracking-wider text-md-primary">Privacy first</span>
+          <h1 className="mt-2 text-xl font-bold tracking-tight text-md-text">Review before you save</h1>
+          <p className="mt-3 text-sm leading-relaxed text-md-muted">
             TraxJob Importer reads the job page you choose, shows the detected
             details for your review, and sends the application to your TraxJob
             account only when you save it.
@@ -215,11 +220,12 @@ function App() {
             href="https://www.traxjob.my.id/privacy"
             target="_blank"
             rel="noopener noreferrer"
+            className="mt-3 inline-block text-sm font-semibold text-md-primary hover:text-md-primary-hover"
           >
-            Read the privacy policy
+            Read the privacy policy →
           </a>
           <button
-            className="primary full"
+            className="mt-4 w-full rounded-xl bg-md-primary px-4 py-3 text-sm font-semibold text-md-on-primary shadow-md transition-all hover:bg-md-primary-hover hover:shadow-lg active:scale-[0.98]"
             onClick={() => void acceptPrivacy()}
             disabled={busy}
           >
@@ -230,40 +236,47 @@ function App() {
         privacyConsent === true && (
           <>
             {message && (
-              <p className={successMessage ? "success" : "message"} role="status">
+              <div className={`mb-4 rounded-xl p-3 text-sm ${successMessage ? "bg-md-offer/10 text-md-offer" : "bg-md-surface-container/50 text-md-muted backdrop-blur-sm"}`} role="status">
                 {message}
-              </p>
+              </div>
             )}
 
             {!connected ? (
-              <section className="login-card panel">
-                <span className="eyebrow">Almost there</span>
-                <h1>Connect your TraxJob account</h1>
-                <p>
-                  Log in once to save this job and keep your applications in
-                  sync.
+              <section className="overflow-hidden rounded-2xl bg-gradient-to-br from-md-surface-container to-md-surface-low p-6 shadow-md">
+                <span className="text-xs font-bold uppercase tracking-wider text-md-primary">Almost there</span>
+                <h1 className="mt-2 text-xl font-bold tracking-tight text-md-text">Connect your account</h1>
+                <p className="mt-3 text-sm leading-relaxed text-md-muted">
+                  Log in once to save this job and keep your applications in sync.
                 </p>
-                <button className="primary full" onClick={login} disabled={busy}>
+                <button 
+                  className="mt-4 w-full rounded-xl bg-md-primary px-4 py-3 text-sm font-semibold text-md-on-primary shadow-md transition-all hover:bg-md-primary-hover hover:shadow-lg active:scale-[0.98]" 
+                  onClick={login} 
+                  disabled={busy}
+                >
                   Login to TraxJob
                 </button>
               </section>
             ) : (
               <form
-                className="job-form"
+                className="space-y-4"
                 onSubmit={(event) => {
                   event.preventDefault();
                   void save();
                 }}
               >
-                <section className="panel">
-                  <div className="panel-heading">
+                <section className="overflow-hidden rounded-2xl bg-gradient-to-br from-md-surface-container to-md-surface-low p-5 shadow-md">
+                  <div className="mb-4 flex items-start justify-between gap-3">
                     <div>
-                      <span className="eyebrow">Imported job</span>
-                      <h1>Review details</h1>
+                      <span className="text-xs font-bold uppercase tracking-wider text-md-primary">Imported job</span>
+                      <h2 className="mt-1 text-lg font-bold tracking-tight text-md-text">Review details</h2>
                     </div>
-                    {form.source && <span className="source-badge">{form.source}</span>}
+                    {form.source && (
+                      <span className="rounded-full bg-md-primary/10 px-3 py-1 text-xs font-bold text-md-primary">
+                        {form.source}
+                      </span>
+                    )}
                   </div>
-                  <div className="grid">
+                  <div className="grid grid-cols-2 gap-3">
                     <Field
                       label="Company *"
                       value={form.company}
@@ -275,108 +288,118 @@ function App() {
                       onChange={(value) => update("role", value)}
                     />
                   </div>
-                  <Field
-                    label="Job posting URL"
-                    type="url"
-                    value={form.url}
-                    onChange={(value) => update("url", value)}
-                  />
+                  <div className="mt-3">
+                    <Field
+                      label="Job posting URL"
+                      type="url"
+                      value={form.url}
+                      onChange={(value) => update("url", value)}
+                    />
+                  </div>
                 </section>
 
-                <section className="panel">
-                  <div className="panel-heading">
-                    <div>
-                      <span className="eyebrow">Your tracker</span>
-                      <h1>Application details</h1>
+                <section className="overflow-hidden rounded-2xl bg-gradient-to-br from-md-surface-container to-md-surface-low p-5 shadow-md">
+                  <div className="mb-4">
+                    <span className="text-xs font-bold uppercase tracking-wider text-md-primary">Your tracker</span>
+                    <h2 className="mt-1 text-lg font-bold tracking-tight text-md-text">Application details</h2>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="grid grid-cols-2 gap-3">
+                      <Field
+                        label="Source"
+                        value={form.source}
+                        onChange={(value) => update("source", value)}
+                      />
+                      <label className="flex flex-col gap-1.5">
+                        <span className="text-xs font-semibold text-md-muted">Applied via</span>
+                        <select
+                          value={form.applyVia}
+                          onChange={(event) => update("applyVia", event.target.value)}
+                          className="rounded-lg border border-md-border bg-md-surface-container px-3 py-2 text-sm text-md-text outline-none transition-all focus:border-md-primary focus:bg-white focus:shadow-[0_0_0_3px_rgba(15,110,86,0.12)]"
+                        >
+                          <option value="">Not applied yet</option>
+                          <option>Email</option>
+                          <option>LinkedIn</option>
+                          <option>Glints</option>
+                          <option>Indeed</option>
+                          <option>JobStreet</option>
+                          <option>MagangHub</option>
+                          <option>Kalibrr</option>
+                          <option>Pintarnya</option>
+                          <option>Dealls</option>
+                          <option>Company Profile / Website</option>
+                          <option>Other</option>
+                        </select>
+                      </label>
                     </div>
-                  </div>
-                  <div className="grid">
+                    <div className="grid grid-cols-2 gap-3">
+                      <label className="flex flex-col gap-1.5">
+                        <span className="text-xs font-semibold text-md-muted">Status</span>
+                        <select
+                          value={form.status}
+                          onChange={(event) => update("status", event.target.value)}
+                          className="rounded-lg border border-md-border bg-md-surface-container px-3 py-2 text-sm text-md-text outline-none transition-all focus:border-md-primary focus:bg-white focus:shadow-[0_0_0_3px_rgba(15,110,86,0.12)]"
+                        >
+                          <option value="wishlist">Wishlist</option>
+                          <option value="applied">Applied</option>
+                          <option value="screening">Screening</option>
+                          <option value="psychological_test">Psychological Test</option>
+                          <option value="technical_test">Technical Test</option>
+                          <option value="interview">Interview (General)</option>
+                          <option value="interview_hr">Interview HR</option>
+                          <option value="interview_user">Interview User</option>
+                          <option value="final_interview">Final Interview</option>
+                          <option value="offer">Offer</option>
+                          <option value="accepted">Accepted</option>
+                          <option value="rejected">Rejected</option>
+                          <option value="withdrawn">Withdrawn</option>
+                        </select>
+                      </label>
+                      <Field
+                        label="Date applied"
+                        type="date"
+                        value={form.dateApplied}
+                        onChange={(value) => update("dateApplied", value)}
+                      />
+                    </div>
                     <Field
-                      label="Source"
-                      value={form.source}
-                      onChange={(value) => update("source", value)}
+                      label="Contact link"
+                      value={form.contact}
+                      onChange={(value) => update("contact", value)}
                     />
-                    <label className="field">
-                      <span>Applied via</span>
-                      <select
-                        value={form.applyVia}
-                        onChange={(event) => update("applyVia", event.target.value)}
-                      >
-                        <option value="">Not applied yet</option>
-                        <option>Email</option>
-                        <option>LinkedIn</option>
-                        <option>Glints</option>
-                        <option>Indeed</option>
-                        <option>JobStreet</option>
-                        <option>MagangHub</option>
-                        <option>Kalibrr</option>
-                        <option>Pintarnya</option>
-                        <option>Dealls</option>
-                        <option>Company Profile / Website</option>
-                        <option>Other</option>
-                      </select>
+                    <label className="flex flex-col gap-1.5">
+                      <span className="text-xs font-semibold text-md-muted">Notes</span>
+                      <textarea
+                        value={form.notes}
+                        onChange={(event) => update("notes", event.target.value)}
+                        placeholder="Add context, salary, or follow-up notes…"
+                        className="min-h-[80px] resize-y rounded-lg border border-md-border bg-md-surface-container px-3 py-2 text-sm text-md-text outline-none transition-all focus:border-md-primary focus:bg-white focus:shadow-[0_0_0_3px_rgba(15,110,86,0.12)]"
+                      />
                     </label>
                   </div>
-                  <div className="grid">
-                    <label className="field">
-                      <span>Status</span>
-                      <select
-                        value={form.status}
-                        onChange={(event) => update("status", event.target.value)}
-                      >
-                        <option value="wishlist">Wishlist</option>
-                        <option value="applied">Applied</option>
-                        <option value="screening">Screening</option>
-                        <option value="psychological_test">Psychological Test</option>
-                        <option value="technical_test">Technical Test</option>
-                        <option value="interview">Interview (General)</option>
-                        <option value="interview_hr">Interview HR</option>
-                        <option value="interview_user">Interview User</option>
-                        <option value="final_interview">Final Interview</option>
-                        <option value="offer">Offer</option>
-                        <option value="accepted">Accepted</option>
-                        <option value="rejected">Rejected</option>
-                        <option value="withdrawn">Withdrawn</option>
-                      </select>
-                    </label>
-                    <Field
-                      label="Date applied"
-                      type="date"
-                      value={form.dateApplied}
-                      onChange={(value) => update("dateApplied", value)}
-                    />
-                  </div>
-                  <Field
-                    label="Contact link"
-                    value={form.contact}
-                    onChange={(value) => update("contact", value)}
-                  />
-                  <label className="field">
-                    <span>Notes</span>
-                    <textarea
-                      value={form.notes}
-                      onChange={(event) => update("notes", event.target.value)}
-                      placeholder="Add context, salary, or follow-up notes…"
-                    />
-                  </label>
                 </section>
 
                 {duplicate && (
-                  <p className="warning" role="alert">
+                  <div className="rounded-xl bg-md-rejected/10 p-3 text-sm text-md-rejected" role="alert">
                     This job is already saved. Do you want to save it again?
-                  </p>
+                  </div>
                 )}
-                <div className="actions">
+                <div className="flex justify-end gap-2">
                   {duplicate && (
                     <button
                       type="button"
                       onClick={() => void save(true)}
                       disabled={busy}
+                      className="rounded-lg border border-md-border bg-md-surface-container px-4 py-2 text-sm font-semibold text-md-text transition-all hover:bg-md-surface-low hover:shadow-sm active:scale-[0.98]"
                     >
                       Save anyway
                     </button>
                   )}
-                  <button type="submit" className="primary" disabled={busy}>
+                  <button 
+                    type="submit" 
+                    className="rounded-lg bg-md-primary px-4 py-2 text-sm font-semibold text-md-on-primary shadow-md transition-all hover:bg-md-primary-hover hover:shadow-lg active:scale-[0.98]" 
+                    disabled={busy}
+                  >
                     {busy ? "Saving…" : "Save application"}
                   </button>
                 </div>
