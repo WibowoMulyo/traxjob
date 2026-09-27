@@ -9,11 +9,6 @@ interface Props {
   subtitle?: string;
   children: ReactNode;
   footer?: ReactNode;
-  testimonial?: {
-    quote: string;
-    author: string;
-    role: string;
-  };
 }
 
 export function AuthSplitLayout({
@@ -22,11 +17,6 @@ export function AuthSplitLayout({
   subtitle,
   children,
   footer,
-  testimonial = {
-    quote: "TraxJob transformed how I manage my job search. I finally feel organized and in control.",
-    author: "Sarah Chen",
-    role: "Product Designer"
-  }
 }: Props) {
   return (
     <div className="flex min-h-svh">
@@ -52,34 +42,24 @@ export function AuthSplitLayout({
         </div>
       </div>
 
-      <div className="relative hidden flex-1 overflow-hidden bg-gradient-to-br from-md-secondary-container/30 to-md-surface-container lg:flex lg:flex-col lg:items-center lg:justify-center">
+      <div className="relative hidden flex-1 overflow-hidden bg-gradient-to-br from-md-primary/5 to-md-tertiary/5 lg:flex lg:flex-col lg:items-center lg:justify-center">
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 -z-10"
         >
-          <div className="floating absolute -right-20 top-1/4 h-64 w-64 rounded-full bg-md-primary opacity-10 blur-[100px]" />
-          <div className="floating absolute -left-20 bottom-1/4 h-64 w-64 rounded-full bg-md-tertiary opacity-10 blur-[100px] [animation-delay:1.5s]" />
+          <div className="floating absolute right-1/3 top-1/3 h-[500px] w-[500px] rounded-full bg-md-primary opacity-[0.06] blur-[140px]" />
         </div>
 
-        <div className="max-w-lg px-12">
+        <div className="max-w-lg px-12 text-center">
           <AuthIllustration variant={variant} />
           
-          {testimonial && (
-            <figure className="mt-12 rounded-md-lg bg-md-surface-container/50 p-6 backdrop-blur-sm">
-              <blockquote className="text-lg leading-relaxed text-md-text">
-                "{testimonial.quote}"
-              </blockquote>
-              <figcaption className="mt-4 flex items-center gap-3">
-                <div className="flex size-10 items-center justify-center rounded-full bg-md-primary text-sm font-medium text-md-on-primary">
-                  {testimonial.author.charAt(0)}
-                </div>
-                <div>
-                  <div className="font-medium">{testimonial.author}</div>
-                  <div className="text-sm text-md-muted">{testimonial.role}</div>
-                </div>
-              </figcaption>
-            </figure>
-          )}
+          <h2 className="mt-12 text-3xl font-bold tracking-tight">
+            Your job search, <span className="gradient-text">organized</span>
+          </h2>
+          
+          <p className="mt-4 text-lg text-md-muted">
+            Track applications, manage interviews, and land your dream job.
+          </p>
         </div>
       </div>
     </div>
