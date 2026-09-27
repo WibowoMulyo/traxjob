@@ -549,6 +549,52 @@
   }
 }
 
+/* Cursor behavior utilities */
+@layer utilities {
+  button,
+  [role="button"],
+  [type="button"],
+  [type="submit"],
+  [type="reset"] {
+    cursor: pointer;
+  }
+  
+  button:disabled,
+  [role="button"][aria-disabled="true"] {
+    cursor: not-allowed;
+  }
+  
+  a,
+  [role="link"] {
+    cursor: pointer;
+  }
+  
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="search"],
+  input[type="tel"],
+  input[type="url"],
+  textarea {
+    cursor: text;
+  }
+  
+  input[type="text"]:disabled,
+  input[type="email"]:disabled,
+  input[type="password"]:disabled,
+  textarea:disabled {
+    cursor: not-allowed;
+  }
+  
+  [draggable="true"] {
+    cursor: grab;
+  }
+  
+  [draggable="true"]:active {
+    cursor: grabbing;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
