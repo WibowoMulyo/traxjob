@@ -504,6 +504,28 @@
     opacity: 1;
     transform: scaleX(1);
   }
+  .input-focus-glow {
+    position: relative;
+    transition: all 0.3s var(--ease-md);
+  }
+  .input-focus-glow:focus-within {
+    transform: translateY(-1px);
+  }
+  .input-focus-glow:focus-within::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    background: linear-gradient(
+      135deg,
+      var(--md-primary),
+      var(--md-tertiary)
+    );
+    opacity: 0.15;
+    filter: blur(8px);
+    z-index: -1;
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
