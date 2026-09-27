@@ -24,32 +24,48 @@ export const AuthIllustration = memo(function AuthIllustration({ variant }: Prop
             <circle
               cx="200"
               cy="200"
-              r="120"
+              r="140"
               fill="url(#authGradient)"
-              opacity="0.1"
+              opacity="0.08"
               className="animate-pulse"
             />
+            
+            <rect
+              x="120"
+              y="160"
+              width="160"
+              height="120"
+              rx="16"
+              fill="url(#authGradient)"
+              opacity="0.9"
+            />
+            
             <rect
               x="150"
-              y="150"
+              y="140"
               width="100"
-              height="120"
+              height="24"
               rx="12"
               fill="url(#authGradient)"
-              opacity="0.8"
             />
-            <circle
-              cx="200"
-              cy="130"
-              r="30"
-              fill="url(#authGradient)"
+            
+            <circle cx="170" cy="210" r="8" fill="white" opacity="0.3" />
+            <circle cx="200" cy="210" r="8" fill="white" opacity="0.3" />
+            <circle cx="230" cy="210" r="8" fill="white" opacity="0.3" />
+            
+            <path
+              d="M 160 240 L 240 240"
+              stroke="white"
+              strokeWidth="6"
+              strokeLinecap="round"
+              opacity="0.5"
             />
             <path
-              d="M 180 200 Q 200 185 220 200"
-              stroke="currentColor"
-              strokeWidth="3"
-              fill="none"
-              className="text-md-on-primary"
+              d="M 160 260 L 210 260"
+              stroke="white"
+              strokeWidth="6"
+              strokeLinecap="round"
+              opacity="0.3"
             />
           </>
         ) : (
@@ -57,33 +73,47 @@ export const AuthIllustration = memo(function AuthIllustration({ variant }: Prop
             <circle
               cx="200"
               cy="200"
-              r="120"
+              r="140"
               fill="url(#authGradient)"
-              opacity="0.1"
+              opacity="0.08"
               className="animate-pulse"
             />
+            
             <rect
-              x="140"
-              y="180"
-              width="120"
-              height="80"
+              x="130"
+              y="170"
+              width="140"
+              height="100"
+              rx="16"
+              fill="url(#authGradient)"
+              opacity="0.9"
+            />
+            
+            <rect
+              x="170"
+              y="150"
+              width="60"
+              height="24"
               rx="12"
               fill="url(#authGradient)"
-              opacity="0.8"
             />
+            
             <circle
               cx="200"
-              cy="150"
+              cy="220"
               r="35"
-              fill="url(#authGradient)"
+              fill="white"
+              opacity="0.2"
             />
+            
             <path
-              d="M 165 210 L 190 230 L 235 185"
-              stroke="currentColor"
-              strokeWidth="4"
+              d="M 175 220 L 190 235 L 225 200"
+              stroke="white"
+              strokeWidth="6"
               strokeLinecap="round"
+              strokeLinejoin="round"
               fill="none"
-              className="text-md-on-primary"
+              opacity="0.9"
             />
           </>
         )}
