@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useRef, useState } from "react";
-import { Loader2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import type { Job, JobInput, JobStatus, SortKey } from "@/jobs/jobs.types";
 import { useJobs } from "@/jobs/useJobs";
 import { toast } from "sonner";
@@ -13,17 +13,22 @@ import { Stats } from "@/components/Stats";
 import { Toolbar } from "@/components/Toolbar";
 import { JobTable } from "@/components/JobTable";
 import { JobModal } from "@/components/JobModal";
+import { KanbanView } from "@/components/KanbanView";
+import { FloatingActionButton } from "@/components/FloatingActionButton";
+import { SkeletonLoader } from "@/components/SkeletonLoader";
 
 export function TrackerPage() {
   const { jobs, loading, addJob, updateJob, removeJob, importJobs } = useJobs();
   const { theme, toggle } = useTheme();
   const confirm = useConfirm();
+  const navigate = useNavigate();
 
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState<JobStatus | "">("");
   const [source, setSource] = useState("");
   const [sortKey, setSortKey] = useState<SortKey>("dateApplied");
   const [sortDir, setSortDir] = useState<1 | -1>(-1);
+  const [view, setView] = useState<"table" | "kanban">("table");
 
   /* undefined = closed; null = adding; a Job = editing. */
   const [editing, setEditing] = useState<Job | null | undefined>(undefined);
@@ -76,6 +81,21 @@ export function TrackerPage() {
     [confirm, removeJob],
   );
 
+  const handleStatusChange = useCallback(
+    async (jobId: string, newStatus: JobStatus) => {
+      const job = jobs.find((j) => j.id === jobId);
+      if (!job) return;
+      
+      try {
+        await updateJob(jobId, { ...job, status: newStatus });
+        toast.success(`Moved to ${newStatus}.`);
+      } catch {
+        toast.error("Couldn't update status. Please try again.");
+      }
+    },
+    [jobs, updateJob],
+  );
+
   const handleImportFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     e.target.value = "";
@@ -105,7 +125,9 @@ export function TrackerPage() {
         <Header
           count={jobs.length}
           theme={theme}
+          view={view}
           onToggleTheme={toggle}
+          onToggleView={() => setView((v) => (v === "table" ? "kanban" : "table"))}
           onAdd={() => setEditing(null)}
           onExport={() => exportJson(jobs)}
           onImport={() => fileInputRef.current?.click()}
@@ -114,9 +136,7 @@ export function TrackerPage() {
 
         <div className="mx-auto max-w-[1200px] px-4 pb-2 pt-6 sm:px-6 sm:pt-8">
           {loading ? (
-            <div className="grid place-items-center py-24">
-              <Loader2 className="size-8 animate-spin text-md-primary" />
-            </div>
+            <SkeletonLoader />
           ) : (
             <>
               <Stats counts={stats} />
@@ -129,15 +149,27 @@ export function TrackerPage() {
                 onStatus={setStatus}
                 onSource={setSource}
               />
-              <JobTable
-                jobs={rows}
-                isEmpty={jobs.length === 0}
-                sortKey={sortKey}
-                sortDir={sortDir}
-                onSort={handleSort}
-                onEdit={handleEdit}
-                onDelete={handleDelete}
-              />
+              {view === "table" ? (
+                <JobTable
+                  jobs={rows}
+                  isEmpty={jobs.length === 0}
+                  sortKey={sortKey}
+                  sortDir={sortDir}
+                  onSort={handleSort}
+                  onEdit={handleEdit}
+                  onDelete={handleDelete}
+                  onAddJob={() => setEditing(null)}
+                  onOpenExtension={() => navigate("/extension")}
+                  onImport={() => fileInputRef.current?.click()}
+                />
+              ) : (
+                <KanbanView
+                  jobs={jobs}
+                  onEdit={handleEdit}
+                  onDelete={handleDelete}
+                  onStatusChange={handleStatusChange}
+                />
+              )}
             </>
           )}
         </div>
@@ -147,6 +179,10 @@ export function TrackerPage() {
           backup.
         </footer>
       </div>
+
+      {!loading && jobs.length > 0 && (
+        <FloatingActionButton onClick={() => setEditing(null)} />
+      )}
 
       <JobModal
         open={modalOpen}

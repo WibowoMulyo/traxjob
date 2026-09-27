@@ -2,7 +2,7 @@ import { useState, type FormEvent } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/auth/AuthContext";
 import { ApiError } from "@/lib/api";
-import { AuthLayout } from "@/components/AuthLayout";
+import { AuthSplitLayout } from "@/components/AuthSplitLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -40,7 +40,8 @@ export function LoginPage() {
   };
 
   return (
-    <AuthLayout
+    <AuthSplitLayout
+      variant="login"
       title="Welcome back"
       subtitle="Log in to your TraxJob account"
       footer={
@@ -61,7 +62,7 @@ export function LoginPage() {
             {error}
           </p>
         )}
-        <div className="grid gap-1.5">
+        <div className="input-focus-glow grid gap-1.5 rounded-md-md">
           <Label htmlFor="email">Email</Label>
           <Input
             id="email"
@@ -72,7 +73,7 @@ export function LoginPage() {
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-        <div className="grid gap-1.5">
+        <div className="input-focus-glow grid gap-1.5 rounded-md-md">
           <div className="flex items-center justify-between">
             <Label htmlFor="password">Password</Label>
             <Link
@@ -95,6 +96,6 @@ export function LoginPage() {
           {submitting ? "Logging in…" : "Log in"}
         </Button>
       </form>
-    </AuthLayout>
+    </AuthSplitLayout>
   );
 }

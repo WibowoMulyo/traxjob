@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowDownUp, Download, LogOut, Moon, Plus, Puzzle, Sun, Upload } from "lucide-react";
+import { ArrowDownUp, Download, LayoutGrid, LogOut, Moon, Plus, Puzzle, Sun, Table as TableIcon, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -18,7 +18,9 @@ import type { Theme } from "@/hooks/useTheme";
 interface Props {
   count: number;
   theme: Theme;
+  view?: "table" | "kanban";
   onToggleTheme: () => void;
+  onToggleView?: () => void;
   onAdd: () => void;
   onExport: () => void;
   onImport: () => void;
@@ -28,7 +30,9 @@ interface Props {
 export function Header({
   count,
   theme,
+  view,
   onToggleTheme,
+  onToggleView,
   onAdd,
   onExport,
   onImport,
@@ -67,6 +71,17 @@ export function Header({
             <span className="hidden sm:inline">Extension</span>
           </Link>
         </Button>
+
+        {onToggleView && (
+          <Button
+            size="icon"
+            variant="ghost"
+            onClick={onToggleView}
+            aria-label={view === "table" ? "Switch to kanban view" : "Switch to table view"}
+          >
+            {view === "table" ? <LayoutGrid /> : <TableIcon />}
+          </Button>
+        )}
 
         <DropdownMenu modal={false}>
           <DropdownMenuTrigger asChild>

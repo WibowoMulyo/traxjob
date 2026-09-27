@@ -1,5 +1,7 @@
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
+import { useCountUp } from "@/hooks/useCountUp";
+import { useReveal } from "@/hooks/useReveal";
 import type { StatCounts } from "@/jobs/selectors";
 
 interface StatItem {
@@ -12,7 +14,21 @@ interface Props {
   counts: StatCounts;
 }
 
+function AnimatedNumber({ value, visible }: { value: number; visible: boolean }) {
+  const { count, startCounting } = useCountUp(value, 1200, 0);
+  
+  useEffect(() => {
+    if (visible) {
+      startCounting();
+    }
+  }, [visible, startCounting]);
+  
+  return <>{count}</>;
+}
+
 export const Stats = memo(function Stats({ counts }: Props) {
+  const { ref, visible } = useReveal();
+  
   const inProgress =
     counts.applied +
     counts.screening +
@@ -31,16 +47,20 @@ export const Stats = memo(function Stats({ counts }: Props) {
     { num: counts.accepted, label: "Accepted", color: "text-md-offer" },
     { num: closed, label: "Closed", color: "text-md-rejected" },
   ];
+  
   return (
-    <div className="mb-7 grid grid-cols-[repeat(auto-fit,minmax(140px,1fr))] gap-3 sm:gap-4">
+    <div
+      ref={ref}
+      className="mb-7 grid grid-cols-[repeat(auto-fit,minmax(140px,1fr))] gap-3 sm:gap-4"
+    >
       {summary.map((item) => (
         <Card
           key={item.label}
           className="gap-0 rounded-md-lg border-0 bg-md-surface-container py-0 shadow-elev-1 transition-[box-shadow,transform] duration-300 ease-md hover:-translate-y-0.5 hover:shadow-elev-2"
         >
           <CardContent className="px-5 py-5">
-            <div className={`text-[2rem] font-medium leading-tight ${item.color}`}>
-              {item.num}
+            <div className={`text-[2rem] font-medium leading-tight tabular-nums ${item.color}`}>
+              <AnimatedNumber value={item.num} visible={visible} />
             </div>
             <div className="mt-0.5 text-xs font-medium uppercase tracking-[0.06em] text-md-muted">
               {item.label}

@@ -26,6 +26,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { StatusBadge } from "./StatusBadge";
+import { EmptyState } from "./EmptyState";
 import { isEmail, isUrl } from "@/lib/format";
 import type { Job, SortKey } from "@/jobs/jobs.types";
 
@@ -37,6 +38,9 @@ interface Props {
   onSort: (key: SortKey) => void;
   onEdit: (job: Job) => void;
   onDelete: (job: Job) => void;
+  onAddJob: () => void;
+  onOpenExtension: () => void;
+  onImport: () => void;
 }
 
 interface Column {
@@ -248,6 +252,9 @@ export const JobTable = memo(function JobTable({
   onSort,
   onEdit,
   onDelete,
+  onAddJob,
+  onOpenExtension,
+  onImport,
 }: Props) {
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const [page, setPage] = useState(1);
@@ -262,21 +269,19 @@ export const JobTable = memo(function JobTable({
     setPage(1);
   }, [jobs]);
 
-  const emptyText = isEmpty ? (
-    <>
-      No applications yet. Click <b>+ Add Application</b> to get started.
-    </>
-  ) : (
-    "No results for this filter."
-  );
-
   /* Render one layout to avoid duplicating rows and menus in the DOM. */
   if (!isDesktop) {
     return (
       <div className="space-y-3">
-        {visibleJobs.length === 0 ? (
+        {visibleJobs.length === 0 && isEmpty ? (
+          <EmptyState
+            onAddJob={onAddJob}
+            onOpenExtension={onOpenExtension}
+            onImport={onImport}
+          />
+        ) : visibleJobs.length === 0 ? (
           <div className="rounded-md-lg bg-md-surface-container px-6 py-12 text-center text-md-muted shadow-elev-1">
-            {emptyText}
+            No results for this filter.
           </div>
         ) : (
           visibleJobs.map((j) => (
@@ -322,18 +327,28 @@ export const JobTable = memo(function JobTable({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {visibleJobs.length === 0 ? (
+            {visibleJobs.length === 0 && isEmpty ? (
+              <TableRow className="hover:bg-transparent">
+                <TableCell colSpan={COLUMNS.length} className="py-0">
+                  <EmptyState
+                    onAddJob={onAddJob}
+                    onOpenExtension={onOpenExtension}
+                    onImport={onImport}
+                  />
+                </TableCell>
+              </TableRow>
+            ) : visibleJobs.length === 0 ? (
               <TableRow className="hover:bg-transparent">
                 <TableCell
                   colSpan={COLUMNS.length}
                   className="px-6 py-16 text-center text-md-muted"
                 >
-                  {emptyText}
+                  No results for this filter.
                 </TableCell>
               </TableRow>
             ) : (
               visibleJobs.map((j) => (
-                <TableRow key={j.id} className="hover:bg-md-primary/[0.07]">
+                <TableRow key={j.id} className="table-row-enhanced hover:bg-md-primary/[0.07]">
                   <TableCell className="px-4 py-4 align-top whitespace-normal">
                     <div className="text-[0.95rem] font-medium">{j.company}</div>
                     <div className="text-[0.8125rem] text-md-muted">
