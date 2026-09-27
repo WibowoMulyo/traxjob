@@ -12,6 +12,7 @@ import { Logo } from "@/components/Logo";
 import { PublicHeader } from "@/components/PublicHeader";
 import { useReveal } from "@/hooks/useReveal";
 import { useSpotlight } from "@/hooks/useSpotlight";
+import { useMagneticButton } from "@/hooks/useMagneticButton";
 import type { JobStatus } from "@/jobs/jobs.types";
 import { InteractiveDemo } from "@/components/InteractiveDemo";
 import { BentoFeatures } from "@/components/BentoFeatures";
@@ -84,6 +85,7 @@ function LandingBackdrop() {
 
 function Hero() {
   const { user } = useAuth();
+  const magneticPrimary = useMagneticButton(0.25);
   return (
     <section className="relative flex min-h-[calc(100svh-4rem)] items-center overflow-hidden">
       <div className="mx-auto grid max-w-[1100px] items-center gap-10 px-4 py-16 sm:px-6 md:grid-cols-2 md:gap-12 md:py-24">
@@ -101,20 +103,24 @@ function Hero() {
           </p>
           <div className="landing-enter mt-8 flex flex-wrap items-center gap-3 [animation-delay:180ms]">
             {user ? (
-              <Button asChild size="lg" className="group pulse-glow text-base">
-                <Link to="/app">
-                  Open TraxJob
-                  <ArrowRight className="transition-transform duration-200 group-hover:translate-x-1" />
-                </Link>
-              </Button>
-            ) : (
-              <>
+              <span ref={magneticPrimary.ref as any} style={magneticPrimary.style}>
                 <Button asChild size="lg" className="group pulse-glow text-base">
-                  <Link to="/register">
-                    Start tracking for free
+                  <Link to="/app">
+                    Open TraxJob
                     <ArrowRight className="transition-transform duration-200 group-hover:translate-x-1" />
                   </Link>
                 </Button>
+              </span>
+            ) : (
+              <>
+                <span ref={magneticPrimary.ref as any} style={magneticPrimary.style}>
+                  <Button asChild size="lg" className="group pulse-glow text-base">
+                    <Link to="/register">
+                      Start tracking for free
+                      <ArrowRight className="transition-transform duration-200 group-hover:translate-x-1" />
+                    </Link>
+                  </Button>
+                </span>
                 <Button asChild size="lg" variant="outline" className="text-base backdrop-blur-sm">
                   <Link to="/login">Log in</Link>
                 </Button>
@@ -268,6 +274,7 @@ function Extension() {
 function FinalCta() {
   const { user } = useAuth();
   const { ref, visible } = useReveal();
+  const magneticCta = useMagneticButton(0.25);
   return (
     <section className="px-4 py-20 sm:px-6 md:py-28">
       <div
@@ -290,17 +297,19 @@ function FinalCta() {
             Track every application in one clear, private workspace.
           </p>
           <div className="mt-8 flex justify-center">
-            <Button
-              asChild
-              size="lg"
-              className="pulse-glow bg-md-bg text-base text-md-primary transition-transform duration-300 hover:scale-105 hover:bg-md-bg/90"
-            >
-              {user ? (
-                <Link to="/app">Open TraxJob</Link>
-              ) : (
-                <Link to="/register">Start tracking for free</Link>
-              )}
-            </Button>
+            <span ref={magneticCta.ref as any} style={magneticCta.style}>
+              <Button
+                asChild
+                size="lg"
+                className="pulse-glow bg-md-bg text-base text-md-primary transition-transform duration-300 hover:scale-105 hover:bg-md-bg/90"
+              >
+                {user ? (
+                  <Link to="/app">Open TraxJob</Link>
+                ) : (
+                  <Link to="/register">Start tracking for free</Link>
+                )}
+              </Button>
+            </span>
           </div>
         </div>
       </div>
