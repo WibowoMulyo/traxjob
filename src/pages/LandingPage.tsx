@@ -74,9 +74,12 @@ function LandingBackdrop() {
       aria-hidden
       className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
     >
-      <div className="floating absolute -top-32 right-[-10%] h-[36rem] w-[36rem] rounded-full bg-md-primary opacity-[0.07] blur-[120px]" />
-      <div className="floating absolute bottom-[-12rem] left-[-10%] h-[34rem] w-[34rem] rounded-full bg-md-tertiary opacity-[0.06] blur-[120px] [animation-delay:1s]" />
+      <div className="floating absolute -top-32 right-[-10%] h-[36rem] w-[36rem] rounded-full bg-md-primary opacity-[0.12] blur-[120px]" />
+      <div className="floating absolute bottom-[-12rem] left-[-10%] h-[34rem] w-[34rem] rounded-full bg-md-tertiary opacity-[0.09] blur-[120px] [animation-delay:1s]" />
+      <div className="absolute top-20 right-[15%] h-64 w-64 rounded-full bg-md-interview opacity-[0.06] blur-[100px]" />
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-md-bg/50" />
+      <div className="decorative-dots absolute left-0 top-1/4 h-32 w-32" />
+      <div className="decorative-grid absolute bottom-1/4 right-0 h-48 w-48" />
     </div>
   );
 }
@@ -183,7 +186,7 @@ function Pipeline() {
           {PIPELINE.map((stage, i) => (
             <li
               key={stage.status}
-              className="group relative rounded-md-lg p-4 transition-[transform,background-color,box-shadow] duration-300 ease-md hover:-translate-y-1 hover:bg-md-surface-container hover:shadow-elev-1"
+              className="group relative rounded-md-lg p-4 transition-[transform,background-color,box-shadow] duration-300 ease-md hover:-translate-y-1 hover:bg-md-surface-container hover:shadow-elev-1 noise-texture"
             >
               <div className="flex items-center justify-center gap-3">
                 <span
@@ -219,8 +222,9 @@ function Extension() {
   const { ref, visible } = useReveal();
   const onSpotlight = useSpotlight<HTMLDivElement>();
   return (
-    <section className="scroll-mt-16 border-t border-md-border px-4 py-20 sm:px-6 md:py-28">
-      <div ref={ref} className="mx-auto w-full max-w-[1100px]">
+    <section className="relative scroll-mt-16 border-t border-md-border px-4 py-20 sm:px-6 md:py-28 overflow-hidden">
+      <div aria-hidden className="pointer-events-none absolute -right-12 top-1/3 h-72 w-72 rounded-full bg-md-offer opacity-[0.05] blur-[100px]" />
+      <div ref={ref} className="relative mx-auto w-full max-w-[1100px]">
         <div
           className={`mx-auto max-w-2xl text-center ${visible ? "landing-reveal" : "opacity-0"}`}
         >
@@ -240,7 +244,7 @@ function Extension() {
         >
           <div
             onMouseMove={onSpotlight}
-            className="spotlight rounded-md-xl border border-md-border bg-md-surface-container p-6 shadow-elev-1 transition-[transform,box-shadow] duration-300 ease-md hover:-translate-y-1 hover:shadow-elev-3"
+            className="spotlight glass-morph rounded-md-xl border border-md-border p-6 shadow-elev-1 transition-[transform,box-shadow] duration-300 ease-md hover:-translate-y-1 hover:shadow-elev-3"
           >
             <h3 className="text-center text-sm font-medium text-md-muted">
               Save from these job boards
