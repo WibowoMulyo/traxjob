@@ -44,8 +44,8 @@ export const KanbanColumn = memo(function KanbanColumn({
         onDragOver={onDragOver}
         onDragLeave={onDragLeave}
         onDrop={onDrop}
-        className={`flex-1 space-y-3 p-3 transition-colors ${
-          isDragOver ? "bg-md-secondary-container/20" : ""
+        className={`flex-1 space-y-3 p-3 transition-all duration-300 ${
+          isDragOver ? "bg-md-primary/5 ring-2 ring-md-primary/20 ring-inset" : ""
         }`}
       >
         {jobs.length === 0 && (
@@ -60,7 +60,7 @@ export const KanbanColumn = memo(function KanbanColumn({
             draggable
             onDragStart={onDragStart(job)}
             onDragEnd={onDragEnd}
-            className="group cursor-move rounded-md-md border border-md-border bg-md-surface-container p-4 shadow-elev-1 transition-[transform,box-shadow] hover:-translate-y-0.5 hover:shadow-elev-2"
+            className="group cursor-grab rounded-lg border border-md-border bg-md-surface-container p-4 shadow-sm transition-all duration-200 hover:scale-[1.02] hover:shadow-md active:cursor-grabbing active:scale-95 active:shadow-lg"
           >
             <div className="mb-2 flex items-start justify-between gap-2">
               <h3 className="font-semibold leading-snug">{job.company}</h3>
@@ -68,7 +68,10 @@ export const KanbanColumn = memo(function KanbanColumn({
                 <Button
                   size="icon-xs"
                   variant="ghost"
-                  onClick={() => onEdit(job)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onEdit(job);
+                  }}
                   aria-label="Edit"
                 >
                   <Pencil />
@@ -76,7 +79,10 @@ export const KanbanColumn = memo(function KanbanColumn({
                 <Button
                   size="icon-xs"
                   variant="ghost"
-                  onClick={() => onDelete(job)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onDelete(job);
+                  }}
                   aria-label="Delete"
                 >
                   <Trash2 />
