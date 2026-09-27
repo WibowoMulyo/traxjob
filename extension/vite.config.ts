@@ -14,6 +14,7 @@ export const popupConfig = defineConfig({
       input: path.resolve(root, "index.html"),
     },
   },
+  base: "./",
 });
 
 export const backgroundConfig = defineConfig({
