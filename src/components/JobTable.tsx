@@ -348,7 +348,7 @@ export const JobTable = memo(function JobTable({
               </TableRow>
             ) : (
               visibleJobs.map((j) => (
-                <TableRow key={j.id} className="hover:bg-md-primary/[0.07]">
+                <TableRow key={j.id} className="table-row-enhanced hover:bg-md-primary/[0.07]">
                   <TableCell className="px-4 py-4 align-top whitespace-normal">
                     <div className="text-[0.95rem] font-medium">{j.company}</div>
                     <div className="text-[0.8125rem] text-md-muted">

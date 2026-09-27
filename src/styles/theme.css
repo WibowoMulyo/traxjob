@@ -526,6 +526,27 @@
     z-index: -1;
     animation: pulse-glow 2s ease-in-out infinite;
   }
+  .table-row-enhanced {
+    transition: all 0.2s var(--ease-md);
+  }
+  .table-row-enhanced:hover {
+    transform: translateX(2px);
+    background: var(--md-secondary-container);
+    box-shadow: var(--md-elev-1);
+  }
+  @keyframes fab-enter {
+    from {
+      transform: scale(0) rotate(-180deg);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1) rotate(0deg);
+      opacity: 1;
+    }
+  }
+  .fab-enter {
+    animation: fab-enter 0.4s var(--ease-md) both;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
