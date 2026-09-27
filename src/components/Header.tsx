@@ -47,7 +47,7 @@ export function Header({
             title="Back to home"
           >
             <Logo className="size-8 shrink-0" />
-            <span className="text-xl font-semibold tracking-tight">TraxJob</span>
+            <span className="text-xl font-medium tracking-[-0.01em]">TraxJob</span>
           </Link>
           {count > 0 && (
             <span className="hidden text-sm text-md-muted sm:inline">

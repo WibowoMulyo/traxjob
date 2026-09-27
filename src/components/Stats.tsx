@@ -44,7 +44,7 @@ export const Stats = memo(function Stats({ counts }: Props) {
   const closed = counts.rejected + counts.withdrawn;
   
   const summary: StatItem[] = [
-    { num: counts.total, label: "Total", color: "text-md-text", bgColor: "bg-md-surface-container", icon: Briefcase },
+    { num: counts.total, label: "Total", color: "text-md-text", bgColor: "bg-md-primary/10", icon: Briefcase },
     { num: counts.wishlist, label: "Saved", color: "text-md-wishlist", bgColor: "bg-md-wishlist/10", icon: Star },
     { num: inProgress, label: "In Progress", color: "text-md-applied", bgColor: "bg-md-applied/10", icon: Clock },
     { num: counts.offer, label: "Offers", color: "text-md-offer", bgColor: "bg-md-offer/10", icon: CheckCircle },
@@ -62,17 +62,21 @@ export const Stats = memo(function Stats({ counts }: Props) {
         return (
           <Card
             key={item.label}
-            className="group relative overflow-hidden rounded-xl border-0 bg-gradient-to-br from-md-surface-container to-md-surface-low shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+            className="group rounded-xl border-0 bg-md-surface-container shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md"
           >
-            <CardContent className="relative p-6">
-              <div className={`absolute right-4 top-4 rounded-lg ${item.bgColor} p-2 opacity-60 transition-opacity group-hover:opacity-100`}>
-                <Icon className={`size-5 ${item.color}`} />
-              </div>
-              <div className={`text-3xl font-bold tabular-nums ${item.color}`}>
-                <AnimatedNumber value={item.num} visible={visible} />
-              </div>
-              <div className="mt-1 text-sm font-medium text-md-muted">
-                {item.label}
+            <CardContent className="relative p-5">
+              <div className="flex items-start justify-between">
+                <div>
+                  <div className={`text-3xl font-semibold tabular-nums ${item.color}`}>
+                    <AnimatedNumber value={item.num} visible={visible} />
+                  </div>
+                  <div className="mt-1.5 text-xs font-medium uppercase tracking-wide text-md-muted">
+                    {item.label}
+                  </div>
+                </div>
+                <div className={`rounded-lg ${item.bgColor} p-2.5 transition-transform duration-300 group-hover:scale-110`}>
+                  <Icon className={`size-4 ${item.color}`} />
+                </div>
               </div>
             </CardContent>
           </Card>
