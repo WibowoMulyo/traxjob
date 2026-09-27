@@ -2,77 +2,70 @@ import { Link } from "react-router-dom";
 import {
   ArrowRight,
   ArrowUpRight,
-  CalendarClock,
-  Download,
-  ListChecks,
-  Palette,
-  Search,
+  Check,
+  ChevronDown,
   ShieldCheck,
-  Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/auth/AuthContext";
 import { Logo } from "@/components/Logo";
-import { StatusBadge } from "@/components/StatusBadge";
+import { PublicHeader } from "@/components/PublicHeader";
+import { useReveal } from "@/hooks/useReveal";
+import { useSpotlight } from "@/hooks/useSpotlight";
 import type { JobStatus } from "@/jobs/jobs.types";
+import { InteractiveDemo } from "@/components/InteractiveDemo";
+import { BentoFeatures } from "@/components/BentoFeatures";
+import { AnimatedStats } from "@/components/AnimatedStats";
 
-const FEATURES = [
+const EXTENSION_SITES = [
+  "LinkedIn",
+  "JobStreet",
+  "Glints",
+  "MagangHub",
+  "Kalibrr",
+  "Indeed",
+  "Pintarnya",
+  "Dealls",
+];
+
+const PIPELINE: { status: JobStatus; title: string; body: string }[] = [
   {
-    icon: ListChecks,
-    title: "A clear status pipeline",
-    body: "Move every application through Wishlist → Applied → Interview → Offer, and see exactly where each one stands.",
+    status: "wishlist",
+    title: "Wishlist",
+    body: "Save roles worth a shot before you apply.",
   },
   {
-    icon: Search,
-    title: "Search, filter & sort",
-    body: "Find any role in a second by company, source, or status — and sort by the date you applied.",
+    status: "applied",
+    title: "Applied",
+    body: "Log where and when you sent each application.",
   },
   {
-    icon: Download,
-    title: "Export & import",
-    body: "Your data is never locked in — export everything to JSON or CSV any time, and import it back whenever you need.",
+    status: "interview",
+    title: "Interview",
+    body: "Track every round and keep notes on the conversation.",
   },
   {
-    icon: ShieldCheck,
-    title: "Private & secure",
-    body: "Your own account, protected with modern password hashing. Your job search data stays yours.",
-  },
-  {
-    icon: CalendarClock,
-    title: "Notes & follow-ups",
-    body: "Jot down recruiter names, salary ranges, and deadlines so you never miss a follow-up.",
-  },
-  {
-    icon: Palette,
-    title: "Light & dark, your way",
-    body: "A calm Material You interface in the TraxJob palette, with a polished light and dark theme.",
+    status: "offer",
+    title: "Offer",
+    body: "See what is on the table before you decide.",
   },
 ];
 
-const STEPS = [
-  {
-    n: "1",
-    title: "Add an application",
-    body: "Capture the company, role, source, and how you applied in seconds.",
-  },
-  {
-    n: "2",
-    title: "Track its progress",
-    body: "Update the status as you hear back and keep notes on every conversation.",
-  },
-  {
-    n: "3",
-    title: "Stay on top of it",
-    body: "Search, filter, and review your pipeline at a glance — then export to back up.",
-  },
-];
-
-const PREVIEW_ROWS: { company: string; role: string; status: JobStatus }[] = [
-  { company: "Qiscus", role: "Backend Engineer", status: "interview" },
-  { company: "Acme Corp", role: "Frontend Engineer", status: "applied" },
-  { company: "Globex", role: "Product Designer", status: "offer" },
-  { company: "Initech", role: "Data Analyst", status: "wishlist" },
-];
+const STAGE_DOT: Record<JobStatus, string> = {
+  wishlist: "bg-md-wishlist",
+  applied: "bg-md-applied",
+  screening: "bg-md-applied",
+  psychological_test: "bg-md-interview",
+  technical_test: "bg-md-interview",
+  interview: "bg-md-interview",
+  interview_hr: "bg-md-interview",
+  interview_user: "bg-md-interview",
+  final_interview: "bg-md-interview",
+  offer: "bg-md-offer",
+  accepted: "bg-md-offer",
+  rejected: "bg-md-rejected",
+  withdrawn: "bg-md-rejected",
+};
 
 function LandingBackdrop() {
   return (
@@ -80,222 +73,192 @@ function LandingBackdrop() {
       aria-hidden
       className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
     >
-      <div className="landing-grid absolute inset-0 text-md-outline opacity-50" />
-
-      <div className="absolute -top-24 -right-24 h-[34rem] w-[34rem] animate-[blob-drift-a_24s_ease-in-out_infinite_alternate] rounded-full bg-md-primary opacity-[0.12] blur-[110px]" />
-      <div className="absolute top-[12%] -left-28 h-[30rem] w-[30rem] animate-[blob-drift-b_30s_ease-in-out_infinite_alternate] rounded-full bg-md-tertiary opacity-[0.1] blur-[110px]" />
-      <div className="absolute top-[32%] -right-28 h-[32rem] w-[32rem] animate-[blob-drift-c_26s_ease-in-out_infinite_alternate] rounded-full bg-md-secondary-container opacity-[0.16] blur-[120px]" />
-      <div className="absolute top-[50%] -left-24 h-[30rem] w-[30rem] animate-[blob-drift-a_28s_ease-in-out_infinite_alternate] rounded-full bg-md-primary opacity-[0.1] blur-[110px] [animation-delay:-8s]" />
-      <div className="absolute top-[70%] -right-24 h-[30rem] w-[30rem] animate-[blob-drift-b_32s_ease-in-out_infinite_alternate] rounded-full bg-md-tertiary opacity-[0.11] blur-[110px] [animation-delay:-6s]" />
-      <div className="absolute top-[88%] -left-20 h-[28rem] w-[28rem] animate-[blob-drift-c_30s_ease-in-out_infinite_alternate] rounded-full bg-md-primary opacity-[0.1] blur-[110px] [animation-delay:-12s]" />
+      <div className="floating absolute -top-32 right-[-10%] h-[36rem] w-[36rem] rounded-full bg-md-primary opacity-[0.07] blur-[120px]" />
+      <div className="floating absolute bottom-[-12rem] left-[-10%] h-[34rem] w-[34rem] rounded-full bg-md-tertiary opacity-[0.06] blur-[120px] [animation-delay:1s]" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-md-bg/50" />
     </div>
   );
 }
 
-function LandingNav() {
-  const { user } = useAuth();
-  return (
-    <header className="sticky top-0 z-20 border-b border-md-border bg-md-bg/70 backdrop-blur-md">
-      <div className="mx-auto flex max-w-[1100px] items-center justify-between gap-4 px-4 py-3.5 sm:px-6">
-        <Link to="/" className="flex items-center gap-2.5">
-          <Logo className="size-8" />
-          <span className="text-xl font-medium tracking-[-0.01em]">TraxJob</span>
-        </Link>
-        <nav className="flex items-center gap-1 sm:gap-2">
-          <a
-            href="#features"
-            className="hidden rounded-full px-4 py-2 text-sm font-medium text-md-muted transition-colors hover:text-md-text sm:inline-block"
-          >
-            Features
-          </a>
-          <a
-            href="#how"
-            className="hidden rounded-full px-4 py-2 text-sm font-medium text-md-muted transition-colors hover:text-md-text sm:inline-block"
-          >
-            How it works
-          </a>
-          {user ? (
-            <Button asChild>
-              <Link to="/app">Open app</Link>
-            </Button>
-          ) : (
-            <>
-              <Button asChild variant="ghost">
-                <Link to="/login">Log in</Link>
-              </Button>
-              <Button asChild>
-                <Link to="/register">Sign up</Link>
-              </Button>
-            </>
-          )}
-        </nav>
-      </div>
-    </header>
-  );
-}
+
 
 function Hero() {
   const { user } = useAuth();
   return (
-    <section className="relative flex min-h-[calc(100svh-69px)] items-center overflow-hidden">
+    <section className="relative flex min-h-[calc(100svh-4rem)] items-center overflow-hidden">
       <div className="mx-auto grid max-w-[1100px] items-center gap-10 px-4 py-16 sm:px-6 md:grid-cols-2 md:gap-12 md:py-24">
         <div>
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-md-secondary-container px-3.5 py-1.5 text-xs font-medium text-md-on-secondary-container">
-            <Sparkles className="size-3.5" />
-            Free · Private · Made for job seekers
+          <span className="landing-enter inline-flex items-center gap-2 rounded-full border border-md-primary/25 bg-md-primary/5 px-3.5 py-1.5 text-xs font-medium text-md-primary backdrop-blur-sm">
+            <ShieldCheck className="size-3.5" aria-hidden />
+            No ads, no trackers
           </span>
-          <h1 className="mt-5 text-[2rem] font-bold leading-[1.12] tracking-[-0.02em] sm:text-[2.6rem] md:text-[3.25rem]">
-            Track every job application in one calm place.
+          <h1 className="landing-enter mt-6 text-[2rem] font-bold leading-[1.12] tracking-[-0.02em] [animation-delay:60ms] sm:text-[2.6rem] md:text-[3.25rem]">
+            Keep your <span className="gradient-text">job search</span> organized, from application to offer.
           </h1>
-          <p className="mt-5 max-w-xl text-lg leading-relaxed text-md-muted">
-            TraxJob keeps your job search organized — log applications, move them
-            through clear stages, and follow up on time. No spreadsheets, no
-            chaos, just your job hunt under control.
+          <p className="landing-enter mt-6 max-w-xl text-lg leading-relaxed text-md-muted [animation-delay:120ms]">
+            Save every application, track its progress, and know what to follow
+            up on, without spreadsheets.
           </p>
-          <div className="mt-8 flex flex-wrap items-center gap-3">
+          <div className="landing-enter mt-8 flex flex-wrap items-center gap-3 [animation-delay:180ms]">
             {user ? (
-              <>
-                <Button asChild size="lg" className="text-base">
-                  <Link to="/app">
-                    Open TraxJob
-                    <ArrowRight />
-                  </Link>
-                </Button>
-                <Button asChild size="lg" variant="outline" className="text-base">
-                  <Link to="/extension">Browser extension</Link>
-                </Button>
-              </>
+              <Button asChild size="lg" className="group pulse-glow text-base">
+                <Link to="/app">
+                  Open TraxJob
+                  <ArrowRight className="transition-transform duration-200 group-hover:translate-x-1" />
+                </Link>
+              </Button>
             ) : (
               <>
-                <Button asChild size="lg" className="text-base">
+                <Button asChild size="lg" className="group pulse-glow text-base">
                   <Link to="/register">
-                    Get started — it's free
-                    <ArrowRight />
+                    Start tracking for free
+                    <ArrowRight className="transition-transform duration-200 group-hover:translate-x-1" />
                   </Link>
                 </Button>
-                <Button asChild size="lg" variant="outline" className="text-base">
+                <Button asChild size="lg" variant="outline" className="text-base backdrop-blur-sm">
                   <Link to="/login">Log in</Link>
-                </Button>
-                <Button asChild size="lg" variant="ghost" className="text-base">
-                  <Link to="/extension">Browser extension</Link>
                 </Button>
               </>
             )}
           </div>
           {!user && (
-            <p className="mt-4 text-sm text-md-muted">
-              Free to use — create an account in seconds.
+            <p className="landing-enter mt-4 text-sm text-md-muted [animation-delay:240ms]">
+              Free to use. No credit card required.
             </p>
           )}
         </div>
 
-        <div className="relative">
-          <div className="rounded-md-xl border border-md-border bg-md-surface-container p-5 shadow-elev-3">
-            <div className="mb-4 flex items-center gap-2.5">
-              <Logo className="size-7" />
-              <span className="font-medium">TraxJob</span>
-              <span className="ml-auto rounded-full bg-md-primary px-3 py-1 text-xs font-medium text-md-on-primary">
-                + Add
-              </span>
-            </div>
-            <div className="overflow-hidden rounded-md-lg border border-md-border">
-              {PREVIEW_ROWS.map((r, i) => (
-                <div
-                  key={r.company}
-                  className={`flex items-center gap-3 px-4 py-3 ${
-                    i !== PREVIEW_ROWS.length - 1
-                      ? "border-b border-md-border"
-                      : ""
-                  }`}
-                >
-                  <div className="min-w-0 flex-1">
-                    <div className="truncate text-sm font-medium">
-                      {r.company}
-                    </div>
-                    <div className="truncate text-xs text-md-muted">
-                      {r.role}
-                    </div>
-                  </div>
-                  <StatusBadge status={r.status} />
-                </div>
-              ))}
-            </div>
-          </div>
+        <div className="landing-enter relative [animation-delay:300ms]">
+          <InteractiveDemo />
         </div>
       </div>
+
+      <Link
+        to="/#features"
+        aria-label="Scroll to features"
+        className="landing-enter absolute bottom-5 left-1/2 -translate-x-1/2 rounded-full p-3 text-md-muted outline-none transition-all duration-300 hover:scale-110 hover:text-md-text focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-md-primary [animation-delay:600ms]"
+      >
+        <ChevronDown className="size-5 animate-bounce" />
+      </Link>
     </section>
   );
 }
 
-function Features() {
-  return (
-    <section
-      id="features"
-      className="scroll-mt-20 bg-gradient-to-b from-md-surface-container/70 to-md-surface-container/20 px-4 py-16 sm:px-6 md:py-24"
-    >
-      <div className="mx-auto max-w-[1100px]">
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-[-0.01em] sm:text-4xl">
-            Everything your job search needs
-          </h2>
-          <p className="mt-4 text-lg text-md-muted">
-            Purpose-built for job seekers — nothing more, nothing in the way.
-          </p>
-        </div>
-        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {FEATURES.map(({ icon: Icon, title, body }) => (
-            <div
-              key={title}
-              className="group rounded-md-lg bg-md-surface-container p-6 shadow-elev-1 transition-[box-shadow,transform] duration-300 ease-md hover:-translate-y-1 hover:shadow-elev-2"
-            >
-              <div className="flex size-12 items-center justify-center rounded-md-md bg-md-secondary-container text-md-on-secondary-container transition-transform duration-300 ease-md group-hover:scale-105">
-                <Icon className="size-6" />
-              </div>
-              <h3 className="mt-5 text-lg font-medium">{title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-md-muted">{body}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
 
-function HowItWorks() {
+
+function Pipeline() {
+  const { ref, visible } = useReveal();
   return (
     <section
       id="how"
-      className="scroll-mt-20 bg-md-secondary-container/25 px-4 py-16 sm:px-6 md:py-24"
+      className="scroll-mt-16 border-t border-md-border bg-md-secondary-container/25 px-4 py-20 sm:px-6 md:py-28"
     >
-      <div className="relative mx-auto max-w-[1100px] overflow-hidden rounded-[2rem] bg-md-surface-container px-6 py-14 shadow-elev-1 sm:px-12">
+      <div
+        ref={ref}
+        className="mx-auto w-full max-w-[1100px]"
+      >
         <div
-          aria-hidden
-          className="pointer-events-none absolute -right-16 -top-20 h-64 w-64 rounded-full bg-md-primary opacity-[0.08] blur-3xl"
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -bottom-24 -left-12 h-64 w-64 rounded-full bg-md-tertiary opacity-[0.08] blur-3xl"
-        />
-        <div className="relative mx-auto max-w-2xl text-center">
+          className={`mx-auto max-w-2xl text-center ${visible ? "landing-reveal" : "opacity-0"}`}
+        >
           <h2 className="text-3xl font-bold tracking-[-0.01em] sm:text-4xl">
-            Get organized in three steps
+            From wishlist to offer
           </h2>
           <p className="mt-4 text-lg text-md-muted">
-            From first application to offer — without the spreadsheet chaos.
+            TraxJob mirrors how a real search moves. Each stage keeps its own
+            notes, dates, and contacts.
           </p>
         </div>
-        <div className="relative mt-12 grid gap-8 md:grid-cols-3">
-          {STEPS.map((s) => (
-            <div key={s.n} className="text-center">
-              <div className="mx-auto flex size-14 items-center justify-center rounded-full bg-md-primary text-2xl font-bold text-md-on-primary shadow-elev-2">
-                {s.n}
+
+        <ol
+          className={`mt-12 grid gap-8 text-center md:grid-cols-4 md:gap-6 ${
+            visible ? "landing-reveal [animation-delay:90ms]" : "opacity-0"
+          }`}
+        >
+          {PIPELINE.map((stage, i) => (
+            <li
+              key={stage.status}
+              className="group relative rounded-md-lg p-4 transition-[transform,background-color,box-shadow] duration-300 ease-md hover:-translate-y-1 hover:bg-md-surface-container hover:shadow-elev-1"
+            >
+              <div className="flex items-center justify-center gap-3">
+                <span
+                  className={`size-3 shrink-0 rounded-full transition-transform duration-300 group-hover:scale-125 ${STAGE_DOT[stage.status]}`}
+                  aria-hidden
+                />
+                {i < PIPELINE.length - 1 && (
+                  <span
+                    aria-hidden
+                    className="hidden h-px flex-1 border-t border-dashed border-md-outline/50 md:block"
+                  />
+                )}
               </div>
-              <h3 className="mt-5 text-lg font-medium">{s.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-md-muted">
-                {s.body}
+              {i < PIPELINE.length - 1 && (
+                <span
+                  aria-hidden
+                  className="absolute left-1/2 top-9 bottom-[-2rem] border-l border-dashed border-md-outline/50 md:hidden"
+                />
+              )}
+              <h3 className="mt-4 text-lg font-medium">{stage.title}</h3>
+              <p className="mx-auto mt-1 max-w-[22ch] text-sm leading-relaxed text-md-muted">
+                {stage.body}
               </p>
-            </div>
+            </li>
           ))}
+        </ol>
+      </div>
+    </section>
+  );
+}
+
+function Extension() {
+  const { ref, visible } = useReveal();
+  const onSpotlight = useSpotlight<HTMLDivElement>();
+  return (
+    <section className="scroll-mt-16 border-t border-md-border px-4 py-20 sm:px-6 md:py-28">
+      <div ref={ref} className="mx-auto w-full max-w-[1100px]">
+        <div
+          className={`mx-auto max-w-2xl text-center ${visible ? "landing-reveal" : "opacity-0"}`}
+        >
+          <h2 className="text-3xl font-bold tracking-[-0.01em] sm:text-4xl">
+            Grab a posting while you browse
+          </h2>
+          <p className="mt-4 text-lg text-md-muted">
+            The browser extension reads the job page you are viewing, and saves
+            it to your tracker with one click. Works on the boards you already
+            use.
+          </p>
+        </div>
+        <div
+          className={`mx-auto mt-12 max-w-2xl ${
+            visible ? "landing-reveal [animation-delay:90ms]" : "opacity-0"
+          }`}
+        >
+          <div
+            onMouseMove={onSpotlight}
+            className="spotlight rounded-md-xl border border-md-border bg-md-surface-container p-6 shadow-elev-1 transition-[transform,box-shadow] duration-300 ease-md hover:-translate-y-1 hover:shadow-elev-3"
+          >
+            <h3 className="text-center text-sm font-medium text-md-muted">
+              Save from these job boards
+            </h3>
+            <ul className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+              {EXTENSION_SITES.map((site) => (
+                <li
+                  key={site}
+                  className="flex items-center gap-2 rounded-full bg-md-secondary-container px-4 py-2.5 text-sm font-medium text-md-on-secondary-container"
+                >
+                  <Check className="size-4 shrink-0 text-md-primary" />
+                  {site}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="mt-12 flex justify-center">
+            <Button asChild size="lg" variant="outline" className="group">
+              <Link to="/extension">
+                See how the extension works
+                <ArrowRight className="transition-transform duration-200 group-hover:translate-x-1" />
+              </Link>
+            </Button>
+          </div>
         </div>
       </div>
     </section>
@@ -304,42 +267,41 @@ function HowItWorks() {
 
 function FinalCta() {
   const { user } = useAuth();
+  const { ref, visible } = useReveal();
   return (
-    <section className="px-6 py-16 md:py-24">
-      <div className="relative mx-auto max-w-[1100px] overflow-hidden rounded-[2rem] bg-md-primary px-6 py-16 text-center shadow-elev-3 sm:px-12">
+    <section className="px-4 py-20 sm:px-6 md:py-28">
+      <div
+        ref={ref}
+        className={`relative mx-auto w-full max-w-[1100px] overflow-hidden rounded-[2rem] bg-gradient-to-br from-md-primary to-md-tertiary px-6 py-14 shadow-elev-3 sm:px-12 ${visible ? "landing-reveal" : "opacity-0"}`}
+      >
         <div
           aria-hidden
-          className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-white/10 blur-3xl"
+          className="pointer-events-none absolute -bottom-24 left-1/2 h-72 w-[36rem] -translate-x-1/2 rounded-full bg-md-on-primary/10 blur-3xl"
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute -bottom-24 -left-16 h-72 w-72 rounded-full bg-white/10 blur-3xl"
+          className="pointer-events-none absolute -top-12 right-[-8rem] h-64 w-64 rounded-full bg-md-on-primary/5 blur-3xl"
         />
-        <h2 className="text-3xl font-bold tracking-[-0.01em] text-md-on-primary sm:text-4xl">
-          Ready to get organized?
-        </h2>
-        <p className="mx-auto mt-4 max-w-xl text-lg text-md-on-primary/85">
-          Start tracking your applications in minutes — it's free, private, and
-          built for the job hunt.
-        </p>
-        <div className="mt-8">
-          <Button
-            asChild
-            size="lg"
-            className="bg-md-bg text-base text-md-primary hover:bg-md-bg/90"
-          >
-            {user ? (
-              <Link to="/app">
-                Open TraxJob
-                <ArrowRight />
-              </Link>
-            ) : (
-              <Link to="/register">
-                Create your free account
-                <ArrowRight />
-              </Link>
-            )}
-          </Button>
+        <div className="relative mx-auto max-w-2xl text-center">
+          <h2 className="text-3xl font-bold tracking-[-0.01em] text-md-on-primary sm:text-4xl">
+            Take control of your job search.
+          </h2>
+          <p className="mt-4 text-lg text-md-on-primary/90">
+            Track every application in one clear, private workspace.
+          </p>
+          <div className="mt-8 flex justify-center">
+            <Button
+              asChild
+              size="lg"
+              className="pulse-glow bg-md-bg text-base text-md-primary transition-transform duration-300 hover:scale-105 hover:bg-md-bg/90"
+            >
+              {user ? (
+                <Link to="/app">Open TraxJob</Link>
+              ) : (
+                <Link to="/register">Start tracking for free</Link>
+              )}
+            </Button>
+          </div>
         </div>
       </div>
     </section>
@@ -348,13 +310,13 @@ function FinalCta() {
 
 function LandingFooter() {
   return (
-    <footer className="border-t border-md-border px-6 py-10">
+    <footer className="border-t border-md-border px-4 py-10 sm:px-6">
       <div className="mx-auto flex max-w-[1100px] flex-col items-center justify-between gap-4 sm:flex-row">
         <div className="flex items-center gap-2.5">
           <Logo className="size-7" />
           <span className="font-medium">TraxJob</span>
           <span className="text-sm text-md-muted">
-            · Track your job search, calmly.
+            Track your job search, calmly.
           </span>
         </div>
         <div className="flex items-center gap-5 text-sm text-md-muted">
@@ -384,11 +346,13 @@ export function LandingPage() {
   return (
     <div className="relative z-10 flex min-h-svh flex-col">
       <LandingBackdrop />
-      <LandingNav />
+      <PublicHeader />
       <main className="flex-1">
         <Hero />
-        <Features />
-        <HowItWorks />
+        <BentoFeatures />
+        <AnimatedStats />
+        <Pipeline />
+        <Extension />
         <FinalCta />
       </main>
       <LandingFooter />
