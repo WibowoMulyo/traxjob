@@ -55,25 +55,24 @@ export const Stats = memo(function Stats({ counts }: Props) {
   return (
     <div
       ref={ref}
-      className="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6"
+      className="mb-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6"
     >
       {summary.map((item) => {
         const Icon = item.icon;
         return (
           <Card
             key={item.label}
-            className="group overflow-hidden rounded-2xl border border-md-outline/5 bg-md-surface-container shadow-sm ring-1 ring-black/5 transition-all duration-200 hover:shadow-md dark:ring-white/5"
+            className="group relative overflow-hidden rounded-xl border-0 bg-gradient-to-br from-md-surface-container to-md-surface-low p-5 shadow-elev-1 transition-all duration-300 hover:shadow-elev-2"
           >
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div className={`rounded-xl ${item.bgColor} p-2`}>
-                  <Icon className={`size-4 ${item.color}`} strokeWidth={2.5} />
-                </div>
+            <div className="absolute inset-0 bg-gradient-to-br from-transparent to-black/5 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+            <CardContent className="relative p-0">
+              <div className={`inline-flex rounded-lg ${item.bgColor} p-2 mb-3`}>
+                <Icon className={`size-4 ${item.color}`} strokeWidth={2} />
               </div>
-              <div className={`mt-4 text-2xl font-bold tabular-nums tracking-tight ${item.color}`}>
+              <div className={`text-3xl font-semibold tabular-nums tracking-tight ${item.color}`}>
                 <AnimatedNumber value={item.num} visible={visible} />
               </div>
-              <div className="mt-1 text-xs font-medium text-md-muted">
+              <div className="mt-1.5 text-xs font-medium text-md-muted">
                 {item.label}
               </div>
             </CardContent>
