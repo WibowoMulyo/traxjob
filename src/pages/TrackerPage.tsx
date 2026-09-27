@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import type { Job, JobInput, JobStatus, SortKey } from "@/jobs/jobs.types";
 import { useJobs } from "@/jobs/useJobs";
@@ -18,6 +19,7 @@ export function TrackerPage() {
   const { jobs, loading, addJob, updateJob, removeJob, importJobs } = useJobs();
   const { theme, toggle } = useTheme();
   const confirm = useConfirm();
+  const navigate = useNavigate();
 
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState<JobStatus | "">("");
@@ -137,6 +139,9 @@ export function TrackerPage() {
                 onSort={handleSort}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
+                onAddJob={() => setEditing(null)}
+                onOpenExtension={() => navigate("/extension")}
+                onImport={() => fileInputRef.current?.click()}
               />
             </>
           )}
