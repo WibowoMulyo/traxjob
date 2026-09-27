@@ -32,7 +32,7 @@ export const KanbanColumn = memo(function KanbanColumn({
   onDelete,
 }: Props) {
   return (
-    <div className="flex min-h-[600px] flex-col rounded-md-lg bg-md-surface-low">
+    <div className="flex h-full flex-col rounded-md-lg bg-md-surface-low">
       <div className="flex items-center justify-between border-b border-md-border px-4 py-3">
         <StatusBadge status={status} />
         <span className="text-sm font-medium tabular-nums text-md-muted">

@@ -43,9 +43,9 @@ export const KanbanView = memo(function KanbanView({
 
   return (
     <div className="overflow-x-auto pb-4">
-      <div className="flex min-w-max gap-4">
+      <div className="grid auto-cols-fr grid-flow-col gap-4" style={{ minWidth: 'max-content' }}>
         {columnData.map(({ status, jobs: columnJobs, count }) => (
-          <div key={status} className="w-80">
+          <div key={status} className="min-w-[280px]">
             <KanbanColumn
               status={status}
               jobs={columnJobs}
