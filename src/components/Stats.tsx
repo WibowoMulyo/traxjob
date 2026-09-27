@@ -55,28 +55,26 @@ export const Stats = memo(function Stats({ counts }: Props) {
   return (
     <div
       ref={ref}
-      className="mb-8 grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-4"
+      className="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6"
     >
       {summary.map((item) => {
         const Icon = item.icon;
         return (
           <Card
             key={item.label}
-            className="group rounded-xl border-0 bg-md-surface-container shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md"
+            className="group overflow-hidden rounded-2xl border border-md-outline/5 bg-md-surface-container shadow-sm ring-1 ring-black/5 transition-all duration-200 hover:shadow-md dark:ring-white/5"
           >
-            <CardContent className="relative p-5">
-              <div className="flex items-start justify-between">
-                <div>
-                  <div className={`text-3xl font-semibold tabular-nums ${item.color}`}>
-                    <AnimatedNumber value={item.num} visible={visible} />
-                  </div>
-                  <div className="mt-1.5 text-xs font-medium uppercase tracking-wide text-md-muted">
-                    {item.label}
-                  </div>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div className={`rounded-xl ${item.bgColor} p-2`}>
+                  <Icon className={`size-4 ${item.color}`} strokeWidth={2.5} />
                 </div>
-                <div className={`rounded-lg ${item.bgColor} p-2.5 transition-transform duration-300 group-hover:scale-110`}>
-                  <Icon className={`size-4 ${item.color}`} />
-                </div>
+              </div>
+              <div className={`mt-4 text-2xl font-bold tabular-nums tracking-tight ${item.color}`}>
+                <AnimatedNumber value={item.num} visible={visible} />
+              </div>
+              <div className="mt-1 text-xs font-medium text-md-muted">
+                {item.label}
               </div>
             </CardContent>
           </Card>
