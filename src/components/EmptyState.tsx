@@ -15,7 +15,7 @@ export function EmptyState({ onAddJob, onOpenExtension, onImport }: Props) {
   return (
     <div
       ref={ref}
-      className={`mx-auto flex max-w-2xl flex-col items-center py-16 text-center ${
+      className={`mx-auto flex max-w-xl flex-col items-center py-20 text-center ${
         visible ? "landing-reveal" : "opacity-0"
       }`}
     >
@@ -24,30 +24,30 @@ export function EmptyState({ onAddJob, onOpenExtension, onImport }: Props) {
       </div>
 
       <h2
-        className={`mt-8 text-2xl font-bold tracking-[-0.01em] ${
+        className={`mt-10 text-3xl font-bold tracking-tight ${
           visible ? "landing-reveal [animation-delay:200ms]" : "opacity-0"
         }`}
       >
-        No applications yet
+        Ready to get <span className="gradient-text">organized</span>?
       </h2>
       
       <p
-        className={`mt-3 max-w-md text-lg text-md-muted ${
+        className={`mt-4 text-base text-md-muted ${
           visible ? "landing-reveal [animation-delay:300ms]" : "opacity-0"
         }`}
       >
-        Start tracking your job search journey. Add your first application manually or import from your browser.
+        Start tracking your applications and land your dream job.
       </p>
 
       <div
-        className={`mt-8 flex flex-col gap-3 sm:flex-row ${
+        className={`mt-10 flex flex-wrap justify-center gap-3 ${
           visible ? "landing-reveal [animation-delay:400ms]" : "opacity-0"
         }`}
       >
         <Button
           size="lg"
           onClick={onAddJob}
-          className="group"
+          className="group shadow-lg"
         >
           <Plus className="transition-transform duration-200 group-hover:rotate-90" />
           Add Application
@@ -60,7 +60,7 @@ export function EmptyState({ onAddJob, onOpenExtension, onImport }: Props) {
           className="group"
         >
           <Puzzle className="transition-transform duration-200 group-hover:scale-110" />
-          Get Browser Extension
+          Extension
         </Button>
 
         <Button
@@ -70,38 +70,8 @@ export function EmptyState({ onAddJob, onOpenExtension, onImport }: Props) {
           className="group"
         >
           <FileInput className="transition-transform duration-200 group-hover:translate-y-0.5" />
-          Import Data
+          Import
         </Button>
-      </div>
-
-      <div
-        className={`mt-12 grid gap-4 sm:grid-cols-3 ${
-          visible ? "landing-reveal [animation-delay:500ms]" : "opacity-0"
-        }`}
-      >
-        <div className="rounded-md-lg bg-md-surface-container p-5 text-left">
-          <div className="text-3xl">🔍</div>
-          <h3 className="mt-3 font-semibold">Track Everything</h3>
-          <p className="mt-1 text-sm text-md-muted">
-            Company, role, status, dates, and notes in one place.
-          </p>
-        </div>
-        
-        <div className="rounded-md-lg bg-md-surface-container p-5 text-left">
-          <div className="text-3xl">⚡</div>
-          <h3 className="mt-3 font-semibold">Browser Extension</h3>
-          <p className="mt-1 text-sm text-md-muted">
-            Save jobs from LinkedIn, JobStreet, and 6 other boards.
-          </p>
-        </div>
-        
-        <div className="rounded-md-lg bg-md-surface-container p-5 text-left">
-          <div className="text-3xl">📊</div>
-          <h3 className="mt-3 font-semibold">Stay Organized</h3>
-          <p className="mt-1 text-sm text-md-muted">
-            Pipeline view, filters, search, and export anytime.
-          </p>
-        </div>
       </div>
     </div>
   );
